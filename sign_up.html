@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <title>Sign up</title>
+        <link rel="stylesheet" type="text/css" media="all" href="styles.css">
+   </head>
+    <body>
+        <h3>
+            Please enter the following 
+        </h3>
+        <br>
+        <form name="SignUp">
+            First Name: <input type="text" name="first_name" id="fname">
+            <br><br>
+            Last Name: <input type="text" name="last_name" id="lname">
+            <br><br>
+            Username: <input type="text" name="user_name" id="uname">
+            <br><br>
+            Email: <input type="text" name="email">
+            <br><br>
+            Password: <input type="password" name="password" id="pass">
+            <br><br>
+            Confirm Password: <input type="password" name="confirm_password" id="cpass">
+            <br><br>
+            <input type="button" name="clicker" value="Submit" onclick="validate();"/>
+        </form>
+        <script>
+
+            function validate() {
+                if(document.forms["SignUp"].elements["password"].value == document.forms["LogIn"].elements["confirm_password"].value) {
+                    document.write("Hello " + document.forms["SignUp"].elements["first_name"].value + " " + document.forms["SignUp"].elements["last_name"].value + "!");
+                }
+            }
+        </script>
+    </body>
+</html>

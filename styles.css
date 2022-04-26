@@ -1,0 +1,12 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+body {
+    line-height: 22px;
+    font: 17px Times;
+}
+html {
+    margin: 40px auto 60px;
+    width: 805px;
+}
