@@ -7,11 +7,11 @@
   <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    function readFunction()
+    function readFunction(dots, more, readButton)
     {
-      var dots = document.getElementById ("dots");
-      var seeMore = document.getElementById ("more");
-      var buttonMore = document.getElementById ("readButton");
+      var dots = document.getElementById (dots);
+      var seeMore = document.getElementById (more);
+      var buttonMore = document.getElementById (readButton);
 
       if (dots.style.display === "none")
       {
@@ -39,6 +39,10 @@
     text-decoration: none;
   }
   
+  .mores {
+    display: none;
+  }
+
   </style>
 </head>
 
@@ -47,29 +51,29 @@
   <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
-        <img src="logo.png" alt="Logo" style="width:70px;">
+        <img src="images/logo.png" alt="Logo" style="width:70px;">
         News Feed
       </a>
       <form class="d-flex" style="transform:translate(485px);">
         <input class="form-control me-2" type="text" placeholder="Search">
         <button class="btn btn-light" type="button">Search</button>
       </form>
-      <a href="#">
+      <a href="login.html">
         <i class="fa fa-user text-white" style="font-size:30px;"></i>
       </a>
     </div>
   </nav>
 
   <div class="container d-flex flex-column text-center p-5 my-5 bg-light">
-    <a href="#" class="link-dark">
-      <h2 style="text-align: center;">Best Birria Tacos in Manila! <span id = "dots"> ... </span> </h2>
-        <p> <span id = "more"> We found this delicious birria tacos near De La Salle University Manila! 
-        Price ranges from 200-350 pesos </span> </p>
+    <h2 style="text-align: center;">Best Birria Tacos in Manila! <span id = "dots1"> ... </span> </h2>
+      <p> <span class = "mores" id = "more1"> We found this delicious birria tacos near De La Salle University Manila! 
+      Price ranges from 200-350 pesos. </span> </p>
+      <form action = "javascript:void(0);">
+        <button onclick = 'readFunction("dots1", "more1", "readButton1")' id = "readButton1">Read more! </button>
+      </form>
+      <pre></pre>
 
-        <button onclick = "readFunction()" id = "readButton">Read more! </button>
-
-      <img src="birria_tacos.jpg" alt="Tacos" style="width:500px;height:375px;margin-bottom:10px;">
-    </a>
+    <img src="images/birria_tacos.jpg" alt="Tacos" class="mx-auto d-block" style="width:500px;height:375px;margin-bottom:10px;">
     <a href="#">
       <i class="fa fa-solid fa-heart d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"></i>
     </a>
@@ -79,11 +83,15 @@
   </div>
 
   <div class="container d-flex flex-column text-center p-5 my-5 bg-light">
-    <a href="#" class="link-dark">
-      <h2 style="text-align: center;">Spicy Ice Cream in Bicol!</h2>
+    <h2 style="text-align: center;">Spicy Ice Cream in Bicol! <span id = "dots2"> ... </span> </h2>
+    <p> <span class = "mores" id = "more2"> While we were staying in Bicol, we luckily had the chance to try out this unique kind
+    of ice cream for only 120 pesos! </span> </p>
+    <form action = "javascript:void(0);">
+      <button onclick = 'readFunction("dots2", "more2", "readButton2")' id = "readButton2">Read more! </button>
+    </form>
+    <pre></pre>
 
-      <img src="spicy_icecream.jpg" alt="IceCream" style="width:500px;height:375px;margin-bottom:10px;">
-    </a>
+    <img src="images/spicy_icecream.jpg" alt="IceCream" class="mx-auto d-block" style="width:500px;height:375px;margin-bottom:10px;">
     <a href="#">
       <i class="fa fa-solid fa-heart d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"></i>
     </a>
