@@ -2,36 +2,86 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Food Reviews in the Philippines</title>
+  <title>Food Reviews Philippines</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    function readFunction(dots, more, readButton)
-    {
-      var dots = document.getElementById (dots);
-      var seeMore = document.getElementById (more);
-      var buttonMore = document.getElementById (readButton);
+    var voted = false;
 
-      if (dots.style.display === "none")
-      {
+    function readFunction(dots, more, readButton) {
+      var dots = document.getElementById(dots);
+      var seeMore = document.getElementById(more);
+      var buttonMore = document.getElementById(readButton);
+
+      if (dots.style.display === "none") {
         dots.style.display = "inline";
         buttonMore.innerHTML = "Read more!";
         seeMore.style.display = "none";
       }
-      else
-      {
+      else {
         dots.style.display = "none";
         buttonMore.innerHTML = "Read less.";
         seeMore.style.display = "inline";
       }
     }
+
+    function incFunction(vote, down) {
+      if (!voted) {
+        var val = parseInt(document.getElementById(vote).innerHTML);
+        val = isNaN(val) ? 0 : val;
+        val++;
+        document.getElementById(vote).innerHTML = val;
+        document.getElementById(down).disabled = true;
+        voted = true;
+      }
+      else {
+        var val = parseInt(document.getElementById(vote).innerHTML);
+        val = isNaN(val) ? 0 : val;
+        val--;
+        document.getElementById(vote).innerHTML = val;
+        document.getElementById(down).disabled = false;
+        voted = false;
+      }
+    }
+
+    function decFunction(vote, up) {
+      if (!voted) {
+        var val = parseInt(document.getElementById(vote).innerHTML);
+        val = isNaN(val) ? 0 : val;
+        val--;
+        document.getElementById(vote).innerHTML = val;
+        document.getElementById(up).disabled = true;
+        voted = true;
+      }
+      else {
+        var val = parseInt(document.getElementById(vote).innerHTML);
+        val = isNaN(val) ? 0 : val;
+        val++;
+        document.getElementById(vote).innerHTML = val;
+        document.getElementById(up).disabled = false;
+        voted = false;
+      }
+    }
+
+    function showComments(commentBox) {
+      var box = document.getElementById(commentBox);
+      if (box.classList.contains("d-none")) {
+        box.classList.remove("d-none");
+        box.classList.add("d-block");
+      }
+      else {
+        box.classList.remove("d-block");
+        box.classList.add("d-none");
+      }
+    }
+
   </script>
 
   <style type="text/css">
   @media (min-width: 1200px) {
     .container{
-        max-width: 650px;
+        max-width: 725px;
     }
   }
 
@@ -47,59 +97,366 @@
 </head>
 
 <body style="background-color:#e7dfd8;">
-
   <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        <img src="logo.png" alt="Logo" style="width:70px;">
+      <a class="navbar-brand" href="index.html">
+        <img src="images/logo.png" alt="Logo" style="width:70px;">
         News Feed
       </a>
-      <form class="d-flex" style="transform:translate(485px);">
+      <form class="d-flex ms-auto mx-2">
         <input class="form-control me-2" type="text" placeholder="Search">
         <button class="btn btn-light" type="button">Search</button>
       </form>
-      <a href="login.html">
-        <i class="fa fa-user text-white" style="font-size:30px;"></i>
+      <a class="mx-2" href="account.html">
+        <i class="fa fa-user text-white" style="font-size:30px"></i>
+      </a>
+      <a class="mx-2" href="login.html">
+        <i class="fa fa-sign-out text-white" style="font-size:30px;"></i>
       </a>
     </div>
   </nav>
 
-  <div class="container d-flex flex-column text-center p-5 my-5 bg-light">
-    <h2 style="text-align: center;">Best Birria Tacos in Manila! <span id = "dots1"> ... </span> </h2>
-      <p> <span class = "mores" id = "more1"> We found this delicious birria tacos near De La Salle University Manila! 
-      Price ranges from 200-350 pesos. </span> </p>
+  <div class="fixed-bottom">
+    <button class="rounded-circle bg-dark" style="position:absolute;bottom:0;right:0;" data-bs-toggle="modal" data-bs-target="#createPost">
+        <i class="fa fa-solid fa-plus text-white mt-1 mx-1" style="font-size:75px;"></i>
+    </button>
+  </div>
+
+  <div class="modal fade" id="createPost">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Create Post</h5>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="modal-body">
+            <div class="form-group">
+                <label for="postName" class="form-control bg-dark text-white">Post Name: </label>
+                <input type="text" class="form-control" id="postName">
+            </div>
+            <div class="form-group">
+                <label for="postBody" class="form-control bg-dark text-white">Post Body: </label>
+                <textarea class="form-control" id="postBody"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="uploadFoodImage" class="form-control bg-dark text-white">Food Image: </label>
+                <input type="file" class="form-control" id="uploadFoodImage">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-dark">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container d-flex flex-column text-center p-5 px-3 my-5 bg-white">
+    <div class="container d-flex flex-row bg-dark mb-3">
+      <a href="account.html" class="link-dark">
+        <img src="images/dp.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:75px;height:75px;">
+        <span class="text-white">Admin</span>
+      </a>
+      <button class="fa fa-edit d-flex text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
+      data-bs-toggle="modal" data-bs-target="#editPost"></button>
+      <button class="fa fa-trash d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
+      data-bs-toggle="modal" data-bs-target="#deletePost"></button>
+
+      <div class="modal fade" id="editPost">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Post</h5>
+              <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                  <label for="postName" class="form-control bg-dark text-white">Post Name: </label>
+                  <input type="text" class="form-control" id="postName" placeholder="Delicious Bacsilog in Manila!">
+              </div>
+              <div class="form-group">
+                  <label for="postBody" class="form-control bg-dark text-white">Post Body: </label>
+                  <textarea class="form-control" id="postBody"></textarea>
+              </div>
+              <div class="form-group">
+                  <label for="uploadFoodImage" class="form-control bg-dark text-white">Food Image: </label>
+                  <input type="file" class="form-control" id="uploadFoodImage">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-dark">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="deletePost">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete Post</h5>
+              <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <p> Are you sure you want to delete your post?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">No</button>
+              <button type="button" class="btn btn-dark">Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <h2 style="text-align: center;">Delicious Bacsilog in Manila! <span id = "dots1"> ... </span> </h2>
+      <p class = "mores" id = "more1"> I will never get tired of Ate Rica's Bacsilog in Agno Food Court. Not only is it delicious, but you can 
+        get one for as low as 74 pesos!</p>
       <form action = "javascript:void(0);">
         <button onclick = 'readFunction("dots1", "more1", "readButton1")' id = "readButton1">Read more! </button>
       </form>
       <pre></pre>
 
-    <img src="birria_tacos.jpg" alt="Tacos" class="mx-auto d-block" style="width:500px;height:375px;margin-bottom:10px;">
-    <a href="#">
-      <i class="fa fa-solid fa-thumbs-up d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"></i>
-      <i class="fa fa-solid fa-thumbs-down d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"></i>
-    </a>
-    <a href="#">
-      <i class="fa fa-comments-o d-flex text-black" style="font-size:30px;"></i>
-    </a>
+    <img src="images/bacsilog.jpg" alt="Bacsilog" class="mx-auto d-block rounded" style="width:500px;height:375px;margin-bottom:10px;">
+    <div class="container d-flex flex-row">
+      <button id="up1" class="fa fa-solid fa-thumbs-up d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+       onclick='incFunction("vote1", "down1")'></button>
+      <span id="vote1" style="font-size:24px;margin:8px 12px;">0</span>
+      <button id="down1" class="fa fa-solid fa-thumbs-down d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+       onclick='decFunction("vote1", "up1")'></button>
+      <button class="fa fa-comments-o d-flex text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+       onclick='showComments("commentBox1")'></button>
+    </div>
+
+    <div class="container d-flex flex-column bg-light d-none" id="commentBox1">
+      <div class="container d-flex align-items-center border border-dark">
+        <button id="upCom1" class="fa fa-solid fa-thumbs-up text-black mx-0" style="font-size:10px;"
+        onclick='incFunction("voteCom1", "downCom1")'></button>
+        <span id="voteCom1" style="font-size:12px;margin:4px 6px;">0</span>
+        <button id="downCom1" class="fa fa-solid fa-thumbs-down text-black mx-0" style="font-size:10px;"
+        onclick='decFunction("voteCom1", "upCom1")'></button>
+        <a href="account_other.html" class="link-dark">
+          <img src="images/alan_watts.png" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;margin-left:5px;">
+          <span>Alan&nbsp;Watts</span>
+        </a>
+        <span class="mx-3" style="font-size:14px">Those look tasty!</span>
+      </div>
+      <div class="container d-flex align-items-center border border-dark">
+        <button id="upCom2" class="fa fa-solid fa-thumbs-up text-black mx-0" style="font-size:10px;"
+        onclick='incFunction("voteCom2", "downCom2")'></button>
+        <span id="voteCom2" style="font-size:12px;margin:4px 6px;">0</span>
+        <button id="downCom2" class="fa fa-solid fa-thumbs-down text-black mx-0" style="font-size:10px;"
+        onclick='decFunction("voteCom2", "upCom2")'></button>
+        <a href="account.html" class="link-dark">
+          <img src="images/dp.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;margin-left:5px;">
+          <span>Admin</span>
+        </a>
+        <span class="mx-3" style="font-size:14px">You should really try one Alan!</span>
+        <button class="fa fa-edit d-flex text-black ms-auto" style="font-size:12px;margin-top:10px;margin-bottom:30px;"
+        data-bs-toggle="modal" data-bs-target="#editComment"></button>
+        <button class="fa fa-trash d-flex text-black" style="font-size:12px;margin-top:10px;margin-bottom:30px;"
+        data-bs-toggle="modal" data-bs-target="#deleteComment"></button>
+
+        <div class="modal fade" id="editComment">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Edit Comment</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <div class="form-group">
+                    <label for="commentBody" class="form-control bg-dark text-white">Comment Body: </label>
+                    <textarea class="form-control" id="commentBody"></textarea>
+                </div>  
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-dark">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal fade" id="deleteComment">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Delete Comment</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <p> Are you sure you want to delete your comment?</p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">No</button>
+                <button type="button" class="btn btn-dark">Yes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="container d-flex align-items-center border border-dark">
+        <a href="account.html" class="link-dark">
+          <img src="images/dp.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;">
+          <span>Admin</span>
+        </a>
+        <div class="input-group my-2">
+          <textarea class="form-control" placeholder="Comment..."></textarea>
+          <div class="input-group-append">
+            <button class="btn btn-outline-dark" type="button">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="container d-flex flex-column text-center p-5 my-5 bg-light">
-    <h2 style="text-align: center;">Spicy Ice Cream in Bicol! <span id = "dots2"> ... </span> </h2>
-    <p> <span class = "mores" id = "more2"> While we were staying in Bicol, we luckily had the chance to try out this unique kind
-    of ice cream for only 120 pesos! </span> </p>
+  <div class="container d-flex flex-column text-center p-5 px-3 my-5 bg-white">
+    <div class="container d-flex flex-row bg-dark mb-3">
+      <a href="account_other.html" class="link-dark me-auto">
+        <img src="images/johnny_depp.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:75px;height:75px;">
+        <span class="text-white">Johnny Depp</span> 
+      </a>
+    </div>
+    <h2 style="text-align: center;">Best Birria Tacos in Manila! <span id = "dots2"> ... </span> </h2>
+      <p class = "mores" id = "more2"> We found these delicious birria tacos near De La Salle University Manila! 
+      The price ranges from 200-350 pesos.</p>
+      <form action = "javascript:void(0);">
+        <button onclick = 'readFunction("dots2", "more2", "readButton2")' id = "readButton2">Read more! </button>
+      </form>
+      <pre></pre>
+
+    <img src="images/birria_tacos.jpg" alt="Tacos" class="mx-auto d-block rounded" style="width:500px;height:375px;margin-bottom:10px;">
+    <div class="container d-flex flex-row">
+      <button id="up2" class="fa fa-solid fa-thumbs-up d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+       onclick='incFunction("vote2", "down2")'></button>
+      <span id="vote2" style="font-size:24px;margin:8px 12px;">0</span>
+      <button id="downCom2" class="fa fa-solid fa-thumbs-down d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+       onclick='decFunction("vote2", "up2")'></button>
+      <button class="fa fa-comments-o d-flex text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+       onclick='showComments("commentBox2")'></button>
+    </div>
+
+    <div class="container d-flex flex-column bg-light d-none" id="commentBox2">
+      <div class="container d-flex align-items-center border border-dark">
+        <button id="upCom3" class="fa fa-solid fa-thumbs-up text-black mx-0" style="font-size:10px;"
+        onclick='incFunction("voteCom3", "downCom3")'></button>
+        <span id="voteCom3" style="font-size:12px;margin:4px 6px;">0</span>
+        <button id="downCom3" class="fa fa-solid fa-thumbs-down text-black mx-0" style="font-size:10px;"
+        onclick='decFunction("voteCom3", "upCom3")'></button>
+        <a href="account_other.html" class="link-dark">
+          <img src="images/alan_watts.png" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;margin-left:5px;">
+          <span>Alan&nbsp;Watts</span>
+        </a>
+        <span class="mx-3" style="font-size:14px">I'm looking forward to tasting that meal tomorrow!</span>
+      </div>
+      <div class="container d-flex align-items-center border border-dark">
+        <button id="upCom4" class="fa fa-solid fa-thumbs-up text-black mx-0" style="font-size:10px;"
+        onclick='incFunction("voteCom4", "downCom4")'></button>
+        <span id="voteCom4" style="font-size:12px;margin:4px 6px;">0</span>
+        <button id="downCom4" class="fa fa-solid fa-thumbs-down text-black mx-0" style="font-size:10px;"
+        onclick='decFunction("voteCom4", "upCom4")'></button>
+        <a href="account_other.html" class="link-dark">
+          <img src="images/johnny_depp.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;margin-left:5px;">
+          <span>Johnny&nbsp;Depp</span>
+        </a>
+        <span class="mx-3" style="font-size:14px">I hope you enjoy it as much as I did, Alan!</span>
+      </div>
+      <div class="container d-flex align-items-center border border-dark">
+        <a href="account.html" class="link-dark">
+          <img src="images/dp.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;">
+          <span>Admin</span>
+        </a>
+        <div class="input-group my-2">
+          <textarea class="form-control" placeholder="Comment..."></textarea>
+          <div class="input-group-append">
+            <button class="btn btn-outline-dark" type="button">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container d-flex flex-column text-center p-5 px-3 my-5 bg-white">
+    <div class="container d-flex flex-row bg-dark mb-3">
+      <a href="account_other.html" class="link-dark me-auto">
+        <img src="images/alan_watts.png" alt="DisplayPicture" class="me-auto rounded-circle" style="width:75px;height:75px;">
+        <span class="text-white">Alan Watts</span> 
+      </a>
+    </div>
+    <h2 style="text-align: center;">Spicy Ice Cream in Bicol! <span id = "dots3"> ... </span> </h2>
+    <p class = "mores" id = "more3"> While we were staying in Bicol, we luckily had the chance to try out this unique kind
+    of ice cream for only 120 pesos!</p>
     <form action = "javascript:void(0);">
-      <button onclick = 'readFunction("dots2", "more2", "readButton2")' id = "readButton2">Read more! </button>
+      <button onclick = 'readFunction("dots3", "more3", "readButton3")' id = "readButton3">Read more! </button>
     </form>
     <pre></pre>
 
-    <img src="spicy_icecream.jpg" alt="IceCream" class="mx-auto d-block" style="width:500px;height:375px;margin-bottom:10px;">
-    <a href="#">
-      <i class="fa fa-solid fa-thumbs-up d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"></i>
-      <i class="fa fa-solid fa-thumbs-down d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"></i>
-    </a>
-    <a href="#">
-      <i class="fa fa-comments-o d-flex text-black" style="font-size:30px;"></i>
-    </a>
+    <img src="images/spicy_icecream.jpg" alt="IceCream" class="mx-auto d-block rounded" style="width:500px;height:375px;margin-bottom:10px;">
+    <div class="container d-flex flex-row">
+      <button id="up3" class="fa fa-solid fa-thumbs-up text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+       onclick='incFunction("vote3", "down3")'></button>
+      <span id="vote3" style="font-size:24px;margin:8px 12px;">0</span>
+      <button id="down3" class="fa fa-solid fa-thumbs-down text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+       onclick='decFunction("vote3", "up3")'></button>
+      <button class="fa fa-comments-o text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+       onclick='showComments("commentBox3")'></button>
+    </div>
+
+    <div class="container d-flex flex-column bg-light d-none" id="commentBox3">
+      <div class="container d-flex align-items-center border border-dark">
+        <button id="upCom5" class="fa fa-solid fa-thumbs-up text-black mx-0" style="font-size:10px;"
+        onclick='incFunction("voteCom5", "downCom5")'></button>
+        <span id="voteCom5" style="font-size:12px;margin:4px 6px;">0</span>
+        <button id="downCom5" class="fa fa-solid fa-thumbs-down text-black mx-0" style="font-size:10px;"
+        onclick='decFunction("voteCom5", "upCom5")'></button>
+        <a href="account_other.html" class="link-dark">
+          <img src="images/johnny_depp.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;margin-left:5px;">
+          <span>Johnny&nbsp;Depp</span>
+        </a>
+        <span class="mx-3" style="font-size:14px">That definitely seems tasty Alan!</span>
+      </div>
+      <div class="container d-flex align-items-center border border-dark">
+        <button id="upCom6" class="fa fa-solid fa-thumbs-up text-black mx-0" style="font-size:10px;"
+        onclick='incFunction("voteCom6", "downCom6")'></button>
+        <span id="voteCom6" style="font-size:12px;margin:4px 6px;">0</span>
+        <button id="downCom6" class="fa fa-solid fa-thumbs-down text-black mx-0" style="font-size:10px;"
+        onclick='decFunction("voteCom6", "upCom6")'></button>
+        <a href="account_other.html" class="link-dark">
+          <img src="images/alan_watts.png" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;margin-left:5px;">
+          <span>Alan&nbsp;Watts</span>
+        </a>
+        <span class="mx-3" style="font-size:14px">You should definitely try it sometime Johnny!</span>
+      </div>
+      <div class="container d-flex align-items-center border border-dark">
+        <button id="upCom7" class="fa fa-solid fa-thumbs-up text-black mx-0" style="font-size:10px;"
+        onclick='incFunction("voteCom7", "downCom7")'></button>
+        <span id="voteCom7" style="font-size:12px;margin:4px 6px;">0</span>
+        <button id="downCom7" class="fa fa-solid fa-thumbs-down text-black mx-0" style="font-size:10px;"
+        onclick='decFunction("voteCom7", "upCom7")'></button>
+        <a href="account_other.html" class="link-dark">
+          <img src="images/johnny_depp.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;margin-left:5px;">
+          <span>Johnny&nbsp;Depp</span>
+        </a>
+        <span class="mx-3" style="font-size:14px">I surely will!</span>
+      </div>
+      <div class="container d-flex align-items-center border border-dark">
+        <a href="account.html" class="link-dark">
+          <img src="images/dp.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;">
+          <span>Admin</span>
+        </a>
+        <div class="input-group my-2">
+          <textarea class="form-control" placeholder="Comment..."></textarea>
+          <div class="input-group-append">
+            <button class="btn btn-outline-dark" type="button">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
 </body>
