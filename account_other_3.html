@@ -7,8 +7,6 @@
   <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    var voted = false;
-
     function readFunction(dots, more, readButton) {
       var dots = document.getElementById(dots);
       var seeMore = document.getElementById(more);
@@ -27,13 +25,12 @@
     }
 
     function incFunction(vote, down) {
-      if (!voted) {
+      if (!document.getElementById(down).disabled) {
         var val = parseInt(document.getElementById(vote).innerHTML);
         val = isNaN(val) ? 0 : val;
         val++;
         document.getElementById(vote).innerHTML = val;
         document.getElementById(down).disabled = true;
-        voted = true;
       }
       else {
         var val = parseInt(document.getElementById(vote).innerHTML);
@@ -41,18 +38,16 @@
         val--;
         document.getElementById(vote).innerHTML = val;
         document.getElementById(down).disabled = false;
-        voted = false;
       }
     }
 
     function decFunction(vote, up) {
-      if (!voted) {
+      if (!document.getElementById(up).disabled) {
         var val = parseInt(document.getElementById(vote).innerHTML);
         val = isNaN(val) ? 0 : val;
         val--;
         document.getElementById(vote).innerHTML = val;
         document.getElementById(up).disabled = true;
-        voted = true;
       }
       else {
         var val = parseInt(document.getElementById(vote).innerHTML);
@@ -60,7 +55,6 @@
         val++;
         document.getElementById(vote).innerHTML = val;
         document.getElementById(up).disabled = false;
-        voted = false;
       }
     }
 
@@ -129,9 +123,9 @@
 
   <div class="container d-flex flex-column text-center p-5 px-3 my-5 bg-white">
     <div class="container d-flex flex-row bg-dark mb-3">
-        <a href="account_other.html" class="link-dark">
-          <img src="images/johnny_depp.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:75px;height:75px;">
-          <span class="text-white">Johnny Depp</span>
+        <a href="account_other_3.html" class="link-dark">
+          <img src="images/totoro.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:75px;height:75px;">
+          <span class="text-white">Totoro San</span>
         </a>
     </div>
 
@@ -141,59 +135,50 @@
 
     <div class="border border-dark bg-light md-5">
         <h4>Bio:</h4>
-        <p>Life is like a bird song.</p>
+        <p>I am the titular character of Studio Ghibli's award-winning film — My Neighbor Totoro.</p>
     </div>
 
-    <div class="container d-flex flex-column text-center p-5 px-3 my-5 bg-white">
+    <div class="border border-dark bg-light mt-3">
+      <button onclick='showActivePosts()'><h4>Active Posts:</h4></button>
+      <div class="container d-flex flex-column text-center p-5 px-3 pt-3 bg-white activePosts d-none">
         <div class="container d-flex flex-row bg-dark mb-3">
-          <a href="account_other.html" class="link-dark me-auto">
-            <img src="images/johnny_depp.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:75px;height:75px;">
-            <span class="text-white">Johnny Depp</span> 
+          <a href="account_other_3.html" class="link-dark me-auto">
+            <img src="images/totoro.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:75px;height:75px;">
+            <span class="text-white">Totoro San</span> 
           </a>
         </div>
-        <h2 style="text-align: center;">Best Birria Tacos in Manila! <span id = "dots2"> ... </span> </h2>
-          <p class = "mores" id = "more2"> We found these delicious birria tacos near De La Salle University Manila! 
-          The price ranges from 200-350 pesos.</p>
-          <form action = "javascript:void(0);">
-            <button onclick = 'readFunction("dots2", "more2", "readButton2")' id = "readButton2">Read more! </button>
-          </form>
-          <pre></pre>
+        <h2 style="text-align: center;">Cozy Bulalo in Tagaytay! <span id = "dots4"> ... </span> </h2>
+        <p class = "mores" id = "more4">Tagaytay has always been known for its one of a kind Bulalo. Yesterday, I finally had the chance to eat one for lunch as my
+          cousin and I were touring around the city! The price ranges from 350 to 450 pesos.
+        </p>
+        <form action = "javascript:void(0);">
+          <button onclick = 'readFunction("dots4", "more4", "readButton4")' id = "readButton4">Read more! </button>
+        </form>
+        <pre></pre>
     
-        <img src="images/birria_tacos.jpg" alt="Tacos" class="mx-auto d-block rounded" style="width:500px;height:375px;margin-bottom:10px;">
+        <img src="images/bulalo.jpg" alt="IceCream" class="mx-auto d-block rounded" style="width:500px;height:375px;margin-bottom:10px;">
         <div class="container d-flex flex-row">
-          <button id="up2" class="fa fa-solid fa-thumbs-up d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
-           onclick='incFunction("vote2", "down2")'></button>
-          <span id="vote2" style="font-size:24px;margin:8px 12px;">0</span>
-          <button id="downCom2" class="fa fa-solid fa-thumbs-down d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
-           onclick='decFunction("vote2", "up2")'></button>
-          <button class="fa fa-comments-o d-flex text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
-           onclick='showComments("commentBox2")'></button>
+          <button id="up4" class="fa fa-solid fa-thumbs-up text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+           onclick='incFunction("vote4", "down4")'></button>
+          <span id="vote4" style="font-size:24px;margin:8px 12px;">0</span>
+          <button id="down4" class="fa fa-solid fa-thumbs-down text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+           onclick='decFunction("vote4", "up4")'></button>
+          <button class="fa fa-comments-o text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+           onclick='showComments("commentBox4")'></button>
         </div>
     
-        <div class="container d-flex flex-column bg-light d-none" id="commentBox2">
+        <div class="container d-flex flex-column bg-light d-none" id="commentBox4">
           <div class="container d-flex align-items-center border border-dark">
-            <button id="upCom3" class="fa fa-solid fa-thumbs-up text-black mx-0" style="font-size:10px;"
-            onclick='incFunction("voteCom3", "downCom3")'></button>
-            <span id="voteCom3" style="font-size:12px;margin:4px 6px;">0</span>
-            <button id="downCom3" class="fa fa-solid fa-thumbs-down text-black mx-0" style="font-size:10px;"
-            onclick='decFunction("voteCom3", "upCom3")'></button>
-            <a href="account_other.html" class="link-dark">
-              <img src="images/alan_watts.png" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;margin-left:5px;">
-              <span>Alan&nbsp;Watts</span>
+            <button id="upCom8" class="fa fa-solid fa-thumbs-up text-black mx-0" style="font-size:10px;"
+            onclick='incFunction("voteCom8", "downCom8")'></button>
+            <span id="voteCom8" style="font-size:12px;margin:4px 6px;">0</span>
+            <button id="downCom8" class="fa fa-solid fa-thumbs-down text-black mx-0" style="font-size:10px;"
+            onclick='decFunction("voteCom8", "upCom8")'></button>
+            <a href="account_other_4.html" class="link-dark">
+              <img src="images/arthur.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;margin-left:5px;">
+              <span>Arthur&nbsp;Morgan</span>
             </a>
-            <span class="mx-3" style="font-size:14px">I'm looking forward to tasting that meal tomorrow!</span>
-          </div>
-          <div class="container d-flex align-items-center border border-dark">
-            <button id="upCom4" class="fa fa-solid fa-thumbs-up text-black mx-0" style="font-size:10px;"
-            onclick='incFunction("voteCom4", "downCom4")'></button>
-            <span id="voteCom4" style="font-size:12px;margin:4px 6px;">0</span>
-            <button id="downCom4" class="fa fa-solid fa-thumbs-down text-black mx-0" style="font-size:10px;"
-            onclick='decFunction("voteCom4", "upCom4")'></button>
-            <a href="account_other.html" class="link-dark">
-              <img src="images/johnny_depp.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;margin-left:5px;">
-              <span>Johnny&nbsp;Depp</span>
-            </a>
-            <span class="mx-3" style="font-size:14px">I hope you enjoy it as much as I did, Alan!</span>
+            <span class="mx-3" style="font-size:14px">Tagaytay's signature Bulalo really does look cozy!</span>
           </div>
           <div class="container d-flex align-items-center border border-dark">
             <a href="account.html" class="link-dark">
@@ -208,5 +193,6 @@
             </div>
           </div>
         </div>
+      </div>
     </div>
 </body>
