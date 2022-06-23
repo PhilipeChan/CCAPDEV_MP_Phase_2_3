@@ -105,32 +105,11 @@
             </style>
 </head>
 
-<!-- <body style="background-color:#e7dfd8;">
-  <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="index.html">
-        <img src="images/logo.png" alt="Logo" style="width:70px;">
-        News Feed
-      </a>
-      <form class="d-flex ms-auto mx-2">
-        <input class="form-control me-2" type="text" placeholder="Search">
-        <button class="btn btn-light" type="button">Search</button>
-      </form>
-      <a class="mx-2" href="account.html">
-        <i class="fa fa-user text-white" style="font-size:30px"></i>
-      </a>
-      <a class="mx-2" href="login.html">
-        <i class="fa fa-sign-out text-white" style="font-size:30px;"></i>
-      </a>
-    </div>
-  </nav>
--->
-
 <body style="background-color:#e7dfd8;">
   <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
     <div class="container-fluid">
-      <a class="navbar-brand" href="index.html">
-        <img src="images/logo.png" alt="Logo" style="width:70px;">
+      <a class="navbar-brand" href="index.hbs">
+        <img src="" alt="Logo" style="width:70px;">
         News Feed
       </a>
       <form class="d-flex ms-auto mx-2">
@@ -152,31 +131,95 @@
     </button>
   </div>
 
-
-<div class="fixed-bottom">
-    <button class="rounded-circle bg-dark" style="position:absolute;bottom:0;right:0;" data-bs-toggle="modal" data-bs-target="#createPost">
-        <i class="fa fa-solid fa-plus text-white mt-1 mx-1" style="font-size:75px;"></i>
-    </button>
-</div>
-
-    <div class="modal fade" id="createPost">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h5 class="modal-title">Create Post</h5>
-                <button class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-    <form action="/submit-post" method="post" enctype="multipart/form-data">
-            Title: <br> <input name="title" type="text" /> <br />
-            Description: <br> <input name="description" type="text" /> <br />
-            Content: <br> <textarea name="content"  rows="10" cols="30"> </textarea> <br />
-            <input type="file" name="image"> <br />
-            <input type="submit">
-        </form>
-        <br>
-            </div>
+<div class="modal fade" id="createPost">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Create Post</h5>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
         </div>
+        <div class="modal-body">
+          <div class="modal-body">
+            <div class="form-group">
+                <label for="postName" class="form-control bg-dark text-white">Post Name: </label>
+                <input type="text" class="form-control" id="postName">
+            </div>
+            <div class="form-group">
+                <label for="postBody" class="form-control bg-dark text-white">Post Body: </label>
+                <textarea class="form-control" id="postBody"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="uploadFoodImage" class="form-control bg-dark text-white">Food Image: </label>
+                <input type="file" class="form-control" id="uploadFoodImage">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-dark">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container d-flex flex-column text-center p-5 px-3 my-5 bg-white">
+    <div class="container d-flex flex-row bg-dark mb-3">
+      <a href="account.html" class="link-dark">
+        <img src="images/dp.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:75px;height:75px;">
+        <span class="text-white">Admin</span>
+      </a>
+      <button class="fa fa-edit d-flex text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
+      data-bs-toggle="modal" data-bs-target="#editPost"></button>
+      <button class="fa fa-trash d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
+      data-bs-toggle="modal" data-bs-target="#deletePost"></button>
+
+      <div class="modal fade" id="editPost">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit Post</h5>
+              <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                  <label for="postName" class="form-control bg-dark text-white">Post Name: </label>
+                  <input type="text" class="form-control" id="postName" placeholder="Delicious Bacsilog in Manila!">
+              </div>
+              <div class="form-group">
+                  <label for="postBody" class="form-control bg-dark text-white">Post Body: </label>
+                  <textarea class="form-control" id="postBody"></textarea>
+              </div>
+              <div class="form-group">
+                  <label for="uploadFoodImage" class="form-control bg-dark text-white">Food Image: </label>
+                  <input type="file" class="form-control" id="uploadFoodImage">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-dark">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="deletePost">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Delete Post</h5>
+              <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <p> Are you sure you want to delete your post?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-bs-dismiss="modal">No</button>
+              <button type="button" class="btn btn-dark">Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
 

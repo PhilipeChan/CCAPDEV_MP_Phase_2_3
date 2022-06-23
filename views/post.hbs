@@ -1,0 +1,54 @@
+  <div class="container d-flex flex-column text-center p-5 px-3 my-5 bg-white">
+    <div class="container d-flex flex-row bg-dark mb-3">
+      <a href="account_other_3.html" class="link-dark me-auto">
+        <img src="images/totoro.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:75px;height:75px;">
+        <span class="text-white">Totoro San</span> 
+      </a>
+    </div>
+    <h2 style="text-align: center;">Cozy Bulalo in Tagaytay! <span id = "dots4"> ... </span> </h2>
+    <p class = "mores" id = "more4">Tagaytay has always been known for its one of a kind Bulalo. Yesterday, I finally had the chance to eat one for lunch as my
+      cousin and I were touring around the city! The price ranges from 350 to 450 pesos.
+    </p>
+    <form action = "javascript:void(0);">
+      <button onclick = 'readFunction("dots4", "more4", "readButton4")' id = "readButton4">Read more! </button>
+    </form>
+    <pre></pre>
+
+    <img src="images/bulalo.jpg" alt="IceCream" class="mx-auto d-block rounded" style="width:500px;height:375px;margin-bottom:10px;">
+    <div class="container d-flex flex-row">
+      <button id="up4" class="fa fa-solid fa-thumbs-up text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+       onclick='incFunction("vote4", "down4")'></button>
+      <span id="vote4" style="font-size:24px;margin:8px 12px;">0</span>
+      <button id="down4" class="fa fa-solid fa-thumbs-down text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+       onclick='decFunction("vote4", "up4")'></button>
+      <button class="fa fa-comments-o text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+       onclick='showComments("commentBox4")'></button>
+    </div>
+
+    <div class="container d-flex flex-column bg-light d-none" id="commentBox4">
+      <div class="container d-flex align-items-center border border-dark">
+        <button id="upCom8" class="fa fa-solid fa-thumbs-up text-black mx-0" style="font-size:10px;"
+        onclick='incFunction("voteCom8", "downCom8")'></button>
+        <span id="voteCom8" style="font-size:12px;margin:4px 6px;">0</span>
+        <button id="downCom8" class="fa fa-solid fa-thumbs-down text-black mx-0" style="font-size:10px;"
+        onclick='decFunction("voteCom8", "upCom8")'></button>
+        <a href="account_other_4.html" class="link-dark">
+          <img src="images/arthur.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;margin-left:5px;">
+          <span>Arthur&nbsp;Morgan</span>
+        </a>
+        <span class="mx-3" style="font-size:14px">Tagaytay's signature Bulalo really does look cozy!</span>
+      </div>
+      <div class="container d-flex align-items-center border border-dark">
+        <a href="account.html" class="link-dark">
+          <img src="images/dp.jpg" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;">
+          <span>Admin</span>
+        </a>
+        <div class="input-group my-2">
+          <textarea class="form-control" placeholder="Comment..."></textarea>
+          <div class="input-group-append">
+            <button class="btn btn-outline-dark" type="button">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
