@@ -1,59 +1,6 @@
 $(document).ready(function () {
 
     /*
-        attach the event `keyup` to the html element where id = `idNum`
-        this html element is an `<input>` element
-        this event activates when the user releases a key on the keyboard
-    */
-    $('#uname').keyup(function () {
-
-        // get the value entered the user in the `<input>` element
-        var username = $('#uname').val();
-
-        /*
-            send an HTTP GET request using JQuery AJAX
-            the first parameter is the path in our server
-            which is defined in `../../routes/routes.js`
-            the server will execute the function getCheckID()
-            defined in `../../controllers/signupController.js`
-            the second parameter passes the variable `idNum`
-            as the value of the field `idNum`
-            to the server
-            the last parameter executes a callback function
-            when the server sent a response
-        */
-        $.get('/getCheckUsername', {username: username}, function (result) {
-
-            /*
-                if the current value of `idNum` exists in the database
-                change the background-color of the `<input>` element to red
-                display an error message
-                and disable the submit button
-            */
-            if(result.username == username) {
-                $('#uname').css('background-color', 'red');
-                $('#error_signup').text('Username already registered');
-                $('#submit_signup').prop('disabled', true);
-            }
-
-            /*
-                else
-                change the background-color of the `<input>` element back
-                remove the error message
-                and enable the submit button
-            */
-            else {
-                $('#uname').css('background-color', 'white');
-                $('#error_signup').text('');
-                $('#submit_signup').prop('disabled', false);
-            }
-        });
-    });
-});
-
-$(document).ready(function () {
-
-    /*
         Function which returns true if all the fields are not empty.
         Otherwise, this function returns false.
         This trims leading and trailing blank spaces
@@ -65,20 +12,16 @@ $(document).ready(function () {
             gets the value of a specific field in the signup form
             then removes leading and trailing blank spaces
         */
-        var fName = validator.trim($('#fName').val());
-        var lName = validator.trim($('#lName').val());
-        var idNum = validator.trim($('#idNum').val());
-        var pw = validator.trim($('#pw').val());
+        var uname = validator.trim($('#uname').val());
+        var pass = validator.trim($('#pass').val());
 
         /*
             checks if the trimmed values in fields are not empty
         */
-        var fNameEmpty = validator.isEmpty(fName);
-        var lNameEmpty = validator.isEmpty(lName);
-        var idNumEmpty = validator.isEmpty(idNum);
-        var pwEmpty = validator.isEmpty(pw);
+        var unameEmpty = validator.isEmpty(uname);
+        var passEmpty = validator.isEmpty(pass);
 
-        return !fNameEmpty && !lNameEmpty && !idNumEmpty && !pwEmpty;
+        return !passEmpty && !unameEmpty;
     }
 
     /*
@@ -91,15 +34,15 @@ $(document).ready(function () {
         - field - refers to the current <input> field calling this function
         - callback - function called after the execution of isValid()
     */
-    function isValidID(field, callback) {
+    function isValidUsername(field, callback) {
 
         /*
             gets the value of `idNum` in the signup form
             removes leading and trailing blank spaces
             then checks if it contains exactly 8 digits
         */
-        var idNum = validator.trim($('#idNum').val());
-        var isValidLength = validator.isLength(idNum, {min: 8, max: 8});
+        var uname = validator.trim($('#uname').val());
+        var isValidLength = validator.isLength(uname, {min: 4});
 
         // if the value of `idNum` contains exactly 8 digits
         if(isValidLength) {
@@ -114,18 +57,18 @@ $(document).ready(function () {
                 the last parameter executes a callback function
                 when the server sent a response
             */
-            $.get('/getCheckID', {idNum: idNum}, function (result) {
+            $.get('/getCheckUsername', {username: uname}, function (result) {
 
                 // if the value of `idNum` does not exists in the database
-                if(result.idNum != idNum) {
+                if(result.username != uname) {
 
                     /*
                         check if the <input> field calling this function
                         is the `idNum` <input> field
                     */
-                    if(field.is($('#idNum')))
+                    if(field.is($('#uname')))
                         // remove the error message in `idNumError`
-                        $('#idNumError').text('');
+                        $('#unameError').text('');
 
                     /*
                         since  the value of `idNum` contains exactly 8 digits
@@ -143,9 +86,9 @@ $(document).ready(function () {
                         check if the <input> field calling this function
                         is the `idNum` <input> field
                     */
-                    if(field.is($('#idNum')))
+                    if(field.is($('#uname')))
                         // display appropriate error message in `idNumError`
-                        $('#idNumError').text('ID number already registered.');
+                        $('#unameError').text('Username number already registered.');
 
                     /*
                         since the value of `idNum`
@@ -164,9 +107,9 @@ $(document).ready(function () {
                 check if the <input> field calling this function
                 is the `idNum` <input> field
             */
-            if(field.is($('#idNum')))
+            if(field.is($('#uname')))
                 // display appropriate error message in `idNumError`
-                $('#idNumError').text('ID Number should contain 8 digits.');
+                $('#unameError').text('ID Number should contain 4 characters.');
 
             /*
                 since the value of `idNum` is less or more than 8 digits
@@ -194,8 +137,8 @@ $(document).ready(function () {
             removes leading and trailing blank spaces
             then checks if it contains at least 8 characters.
         */
-        var password = validator.trim($('#pw').val());
-        var isValidLength = validator.isLength(password, {min: 8});
+        var password = validator.trim($('#pass').val());
+        var isValidLength = validator.isLength(password, {min: 4});
 
         // if the value of `pw` contains at least 8 characters
         if(isValidLength) {
@@ -204,9 +147,9 @@ $(document).ready(function () {
                 check if the <input> field calling this function
                 is the `pw` <input> field
             */
-            if(field.is($('#pw')))
+            if(field.is($('#pass')))
                 // remove the error message in `idNumError`
-                $('#pwError').text('');
+                $('#passError').text('');
 
             /*
                 since  the value of `pw` contains at least 8 characters
@@ -222,9 +165,9 @@ $(document).ready(function () {
                 check if the <input> field calling this function
                 is the `pw` <input> field
             */
-            if(field.is($('#pw')))
+            if(field.is($('#pass')))
                 // display appropriate error message in `pwError`
-                $('#pwError').text(`Passwords should contain at least 8
+                $('#passError').text(`Passwords should contain at least 4
                     characters.`);
         }
 
@@ -290,7 +233,7 @@ $(document).ready(function () {
             call isValidID() function
             to check if the value of `idNum` field is valid
         */
-        isValidID(field, function (validID) {
+        isValidUsername(field, function (validUsername) {
 
             /*
                 if all fields are filled
@@ -298,15 +241,15 @@ $(document).ready(function () {
                 and the ID number contains exactly 8 digits and is unique
                 then enable the `submit` button
             */
-            if(filled && validPassword && validID)
-                $('#submit').prop('disabled', false);
+            if(filled && validPassword && validUsername)
+                $('#submit_signup').prop('disabled', false);
 
             /*
                 else if at least one condition has not been met
                 disable the `submit` button
             */
             else
-                $('#submit').prop('disabled', true);
+                $('#submit_signup').prop('disabled', true);
         });
     }
 
@@ -315,32 +258,10 @@ $(document).ready(function () {
         this html element is an `<input>` element
         this event activates when the user releases a key on the keyboard
     */
-    $('#fName').keyup(function () {
+    $('#uname').keyup(function () {
 
         // calls the validateField() function to validate `fName`
-        validateField($('#fName'), 'First name', $('#fNameError'));
-    });
-
-    /*
-        attach the event `keyup` to the html element where id = `lName`
-        this html element is an `<input>` element
-        this event activates when the user releases a key on the keyboard
-    */
-    $('#lName').keyup(function () {
-
-        // calls the validateField() function to validate `lName`
-        validateField($('#lName'), 'Last name', $('#lNameError'));
-    });
-
-    /*
-        attach the event `keyup` to the html element where id = `idNum`
-        this html element is an `<input>` element
-        this event activates when the user releases a key on the keyboard
-    */
-    $('#idNum').keyup(function () {
-
-        // calls the validateField() function to validate `idNum`
-        validateField($('#idNum'), 'ID Number', $('#idNumError'));
+        validateField($('#uname'), 'Username', $('#unameError'));
     });
 
     /*
@@ -348,10 +269,10 @@ $(document).ready(function () {
         this html element is an `<input>` element
         this event activates when the user releases a key on the keyboard
     */
-    $('#pw').keyup(function () {
+    $('#pass').keyup(function () {
 
         // calls the validateField() function to validate `pw`
-        validateField($('#pw'), 'Password', $('#pwError'));
+        validateField($('#pass'), 'Password', $('#passError'));
     });
 
 });

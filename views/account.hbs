@@ -104,7 +104,7 @@
 <body style="background-color:#e7dfd8;">
   <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/home">
+      <a class="navbar-brand" href="/index">
         <img src="../images/logo.png" alt="Logo" style="width:70px;">
         News Feed
       </a>
@@ -112,10 +112,10 @@
         <input class="form-control me-2" type="text" placeholder="Search">
         <button class="btn btn-light" type="button">Search</button>
       </form>
-      <a class="mx-2" href="/account?user_name={{username}}&image={{profPic}}&bio={{bio}}&reputation={{reputation}}">
+      <a class="mx-2" href="/account/{{name}}">
         <i class="fa fa-user text-white" style="font-size:30px"></i>
       </a>
-      <a class="mx-2" href="signup">
+      <a class="mx-2" href="/logout">
         <i class="fa fa-sign-out text-white" style="font-size:30px;"></i>
       </a>
     </div>
@@ -123,77 +123,78 @@
 
   <div class="container d-flex flex-column text-center p-5 px-3 my-5 bg-white">
     <div class="container d-flex flex-row bg-dark mb-3">
-      <a href="/account?user_name={{username}}&image={{profPic}}&bio={{bio}}&reputation={{reputation}}" class="link-dark">
+      <a href="/account/{{username}}" class="link-dark">
         <img src="../{{profPic}}" alt="DisplayPicture" class="me-auto rounded-circle" style="width:75px;height:75px;">
         <span class="text-white">{{username}}</span>
       </a>
-      <button class="fa fa-edit d-flex text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
-      data-bs-toggle="modal" data-bs-target="#editAccount"></button>
-      <button class="fa fa-trash d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
-      data-bs-toggle="modal" data-bs-target="#deleteAccount"></button>
+      {{#if (isSameAccount name username)}}
+        <button class="fa fa-edit d-flex text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
+        data-bs-toggle="modal" data-bs-target="#editAccount"></button>
+        <button class="fa fa-trash d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
+        data-bs-toggle="modal" data-bs-target="#deleteAccount"></button>
 
-      <div class="modal fade" id="editAccount">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Edit Account</h5>
-              <button class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-                <label for="name" class="form-control bg-dark text-white">Name: </label>
-                <input type="text" class="form-control" id="name" placeholder="{{username}}">
+        <div class="modal fade" id="editAccount">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Edit Account</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
               </div>
-              <div class="form-group">
-                <label for="password" class="form-control bg-dark text-white">Password: </label>
-                <input type="password" class="form-control" id="password">
+              <div class="modal-body">
+                <div class="form-group">
+                  <label for="name" class="form-control bg-dark text-white">Name: </label>
+                  <input type="text" class="form-control" id="name" placeholder="{{username}}">
+                </div>
+                <div class="form-group">
+                  <label for="password" class="form-control bg-dark text-white">Password: </label>
+                  <input type="password" class="form-control" id="password">
+                </div>
+                <div class="form-group">
+                  <label for="bio" class="form-control bg-dark text-white">Bio: </label>
+                  <textarea class="form-control" id="bio"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="uploadDP" class="form-control bg-dark text-white">Profile Picture: </label>
+                  <input type="file" class="form-control" id="uploadDP">
+                </div>
+                <div class="form-group">
+                  <label for="passwordConfirm" class="form-control bg-dark text-white">Current Password: </label>
+                  <input type="password" class="form-control" id="passwordConfirm">
+                </div>
               </div>
-              <div class="form-group">
-                <label for="bio" class="form-control bg-dark text-white">Bio: </label>
-                <textarea class="form-control" id="bio"></textarea>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-dark">Submit</button>
               </div>
-              <div class="form-group">
-                <label for="uploadDP" class="form-control bg-dark text-white">Profile Picture: </label>
-                <input type="file" class="form-control" id="uploadDP">
-              </div>
-              <div class="form-group">
-                <label for="passwordConfirm" class="form-control bg-dark text-white">Current Password: </label>
-                <input type="password" class="form-control" id="passwordConfirm">
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-dark">Submit</button>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="modal fade" id="deleteAccount">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Delete Account</h5>
-              <button class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-              <p> Are you sure you want to delete your account?</p>
-              <div class="form-group">
-                <label for="passwordDelete" class="form-control bg-dark text-white">Current Password: </label>
-                <input type="password" class="form-control" id="passwordDelete">
+        <div class="modal fade" id="deleteAccount">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Delete Account</h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
               </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-light" data-bs-dismiss="modal">No</button>
-              <a href="signup">
-                <button type="button" class="btn btn-dark">Yes</button>
-              </a>
+              <div class="modal-body">
+                <p> Are you sure you want to delete your account?</p>
+                <div class="form-group">
+                  <label for="passwordDelete" class="form-control bg-dark text-white">Current Password: </label>
+                  <input type="password" class="form-control" id="passwordDelete">
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">No</button>
+                <a href="/signup">
+                  <button type="button" class="btn btn-dark">Yes</button>
+                </a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      {{/if}}
     </div>
-
     <div class="border border-light bg-dark">
       <h4 class="text-white">Reputation Score: {{reputation}}</h4>
     </div>
@@ -206,63 +207,164 @@
     <div class="border border-dark bg-light mt-3">
       <button onclick='showActivePosts()'><h4>Active Posts:</h4></button>
       <div class="container d-flex flex-column text-center p-5 px-3 pt-3 bg-white activePosts d-none">
+      {{#each posts}}
+      {{#if (isSameAccount @root.username this.author)}}
         <div class="container d-flex flex-row bg-dark mb-3">
-          <a href="/account?user_name={{username}}&image={{profPic}}&bio={{bio}}&reputation={{reputation}}" class="link-dark">
-            <img src="../{{profPic}}" alt="DisplayPicture" class="me-auto rounded-circle" style="width:75px;height:75px;">
-            <span class="text-white">{{username}}</span>
+          <a href="/account/{{this.author}}" class="link-dark">
+            <img src="../{{this.profPic}}" alt="DisplayPicture" class="me-auto rounded-circle" style="width:75px;height:75px;">
+            <span class="text-white">{{this.author}}</span>
           </a>
-          <button class="fa fa-edit d-flex text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
-          data-bs-toggle="modal" data-bs-target="#editPost"></button>
-          <button class="fa fa-trash d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
-          data-bs-toggle="modal" data-bs-target="#deletePost"></button>
 
-          <div class="modal fade" id="editPost">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Edit Post</h5>
-                  <button class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                  <div class="form-group">
-                    <label for="postName" class="form-control bg-dark text-white">Post Name: </label>
-                    <input type="text" class="form-control" id="postName" placeholder="Delicious Bacsilog in Manila!">
+          {{#if (isSameAccount @root.name this.author)}}
+            <button class="fa fa-edit d-flex text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
+            data-bs-toggle="modal" data-bs-target="#editPost"></button>
+            <button class="fa fa-trash d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
+            data-bs-toggle="modal" data-bs-target="#deletePost"></button>
+
+            <div class="modal fade" id="editPost_index">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Edit Post</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
                   </div>
-                  <div class="form-group">
-                    <label for="postBody" class="form-control bg-dark text-white">Post Body: </label>
-                    <textarea class="form-control" id="postBody"></textarea>
+                  <div class="modal-body">
+                    <div class="form-group">
+                        <label for="postTitle_edit_index" class="form-control bg-dark text-white">Post Title: </label>
+                        <input type="text" class="form-control" id="postTitle_edit_index" placeholder="Delicious Bacsilog in Manila!">
+                    </div>
+                    <div class="form-group">
+                        <label for="postBody_edit_index" class="form-control bg-dark text-white">Post Body: </label>
+                        <textarea class="form-control" id="postBody_edit_index"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="uploadFoodImage_edit_index" class="form-control bg-dark text-white">Food Image: </label>
+                        <input type="file" class="form-control" id="uploadFoodImage_edit_index">
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <label for="uploadFoodImage" class="form-control bg-dark text-white">Food Image: </label>
-                    <input type="file" class="form-control" id="uploadFoodImage">
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-dark">Submit</button>
                   </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-dark">Submit</button>
                 </div>
               </div>
             </div>
-          </div>
-        
-          <div class="modal fade" id="deletePost">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Delete Post</h5>
-                  <button class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body">
-                  <p> Are you sure you want to delete your post?</p>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-light" data-bs-dismiss="modal">No</button>
-                  <button type="button" class="btn btn-dark">Yes</button>
+
+            <div class="modal fade" id="deletePost">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Delete Post</h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                    <p> Are you sure you want to delete your post?</p>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-dark">Yes</button>
+                  </div>
                 </div>
               </div>
             </div>
+          {{/if}}
+        </div>
+        <h2 style="text-align: center;">{{this.title}}<span id = "dots{{@index}}"> ... </span> </h2>
+          <p class = "mores" id = "more{{@index}}">{{this.body}}</p>
+          <form action = "javascript:void(0);">
+            <button onclick = 'readFunction("dots{{@index}}", "more{{@index}}", "readButton{{@index}}")' id = "readButton{{@index}}">Read more! </button>
+          </form>
+          <pre></pre>
+
+        <img src="../{{this.foodPic}}" alt={{this.foodPic}} class="mx-auto d-block rounded" style="width:500px;height:375px;margin-bottom:10px;">
+        <div class="container d-flex flex-row">
+          <button id="up{{@index}}" class="fa fa-solid fa-thumbs-up d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+          onclick='incFunction("vote{{@index}}", "down{{@index}}")'></button>
+          <span id="vote{{@index}}" style="font-size:24px;margin:8px 12px;">{{this.reputation}}</span>
+          <button id="down{{@index}}" class="fa fa-solid fa-thumbs-down d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+          onclick='decFunction("vote{{@index}}", "up{{@index}}")'></button>
+          <button class="fa fa-comments-o d-flex text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+          onclick='showComments("commentBox{{@index}}")'></button>
+        </div>
+
+        <div class="container d-flex flex-column bg-light d-none" id="commentBox{{@index}}">
+          <!--
+          {{#each comments}}
+            <div class="container d-flex align-items-center border border-dark">
+              <button id="upCom{{@index}}" class="fa fa-solid fa-thumbs-up text-black mx-0" style="font-size:10px;"
+              onclick='incFunction("voteCom{{@index}}", "downCom{{@index}}")'></button>
+              <span id="voteCom{{@index}}" style="font-size:12px;margin:4px 6px;">{{this.reputation}}</span>
+              <button id="downCom{{@index}}" class="fa fa-solid fa-thumbs-down text-black mx-0" style="font-size:10px;"
+              onclick='decFunction("voteCom{{@index}}", "upCom{{@index}}")'></button>
+              <a href="/account/{{this.author}}" class="link-dark">
+                <img src="../{{this.profPic}}" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;margin-left:5px;">
+                <span>{{this.author}}</span>
+              </a>
+              <span class="mx-3" style="font-size:14px">{{this.body}}</span>
+              {{#if (isSameAccount @root.name this.author)}}
+                <button class="fa fa-edit d-flex text-black ms-auto" style="font-size:12px;margin-top:10px;margin-bottom:30px;"
+                data-bs-toggle="modal" data-bs-target="#editComment"></button>
+                <button class="fa fa-trash d-flex text-black" style="font-size:12px;margin-top:10px;margin-bottom:30px;"
+                data-bs-toggle="modal" data-bs-target="#deleteComment"></button>
+
+                <div class="modal fade" id="editComment">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Edit Comment</h5>
+                        <button class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="form-group">
+                            <label for="commentBody" class="form-control bg-dark text-white">Comment Body: </label>
+                            <textarea class="form-control" id="commentBody"></textarea>
+                        </div>  
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-dark">Submit</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="modal fade" id="deleteComment">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Delete Comment</h5>
+                        <button class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <p> Are you sure you want to delete your comment?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-dark">Yes</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {{/if}}
+            </div>
+          {{/each}}
+          -->
+          <div class="container d-flex align-items-center border border-dark">
+            <a href="/account/{{@root.name}}" class="link-dark">
+              <img src="../{{@root.pic}}" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;">
+              <span>{{@root.name}}</span>
+            </a>
+            <div class="input-group my-2">
+              <textarea class="form-control" placeholder="Comment..."></textarea>
+              <div class="input-group-append">
+                <button class="btn btn-outline-dark" type="button">Submit</button>
+              </div>
+            </div>
           </div>
-        </div>    
+        </div>
+        <br>
+      {{/if}}
+      {{/each}}
       </div>
     </div>
   </div>

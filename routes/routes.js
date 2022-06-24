@@ -6,10 +6,16 @@ const express = require('express');
 const signupController = require('../controllers/signupController.js');
 
 // import module `successController` from `../controllers/successController.js`
-const homeController = require('../controllers/homeController.js');
+const indexController = require('../controllers/indexController.js');
 
 // import module `profileController` from `../controllers/profileController.js`
 const accountController = require('../controllers/accountController.js');
+
+// import module `loginController` from `../controllers/loginController.js`
+const loginController = require('../controllers/loginController.js');
+
+// import module `logoutController` from `../controllers/logoutController.js`
+const logoutController = require('../controllers/logoutController.js');
 
 // import module `validation` from `../helpers/validation.js`
 const validation = require('../helpers/validation.js');
@@ -27,7 +33,9 @@ app.get('/', signupController.getSignUp);
     defined in object `controller` in `../controllers/controller.js`
     when a client sends an HTTP GET request for `/`
 */
-app.get('/home', homeController.getIndex);
+app.get('/index', indexController.getIndex);
+
+app.post('/indexCreate', indexController.postCreate);
 
 app.get('/signup', signupController.getSignUp);
 
@@ -46,12 +54,33 @@ app.post('/signup', validation.signupValidation(), signupController.postSignUp);
 app.get('/getCheckUsername', signupController.getCheckUsername);
 
 /*
+    execute function getLogIn()
+    defined in object `loginController` in `../controllers/loginController.js`
+    when a client sends an HTTP GET request for `/login`
+*/
+app.get('/login', loginController.getLogIn);
+
+/*
+    execute function postLogIn()
+    defined in object `loginController` in `../controllers/loginController.js`
+    when a client sends an HTTP POST request for `/login`
+*/
+app.post('/login', loginController.postLogIn);
+
+/*
     execute function getProfile()
     defined in object `profileController` in `../controllers/profileController.js`
     when a client sends an HTTP GET request for `/profile/:idNum`
     where `idNum` is a parameter
 */
-app.get('/account', accountController.getAccount);
+app.get('/account/:username', accountController.getAccount);
+
+/*
+    execute function getLogOut()
+    defined in object `logoutController` in `../controllers/logoutController.js`
+    when a client sends an HTTP GET request for `/logout`
+*/
+app.get('/logout', logoutController.getLogOut);
 
 /*
     exports the object `app` (defined above)
