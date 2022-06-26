@@ -87,6 +87,85 @@ const indexController = {
                 res.redirect('/index');
             }
         });
+    },
+
+    postEdit: function (req, res) {
+        /*
+            when submitting forms using HTTP POST method
+            the values in the input fields are stored in `req.body` object
+            each <input> element is identified using its `name` attribute
+            Example: the value entered in <input type="text" name="fName">
+            can be retrieved using `req.body.fName`
+        */
+        var title = req.body.postTitle_ed;
+        var body = req.body.postBody_ed;
+        var postID = req.body.postID;
+
+        const {image} = req.files;
+        image.mv(path.resolve(__dirname,'../public/images',image.name));
+
+        var filter = {
+            _id: postID
+        }
+
+        var update = {
+            title: title,
+            foodPic: '/images/'+image.name,
+            body: body
+        }
+
+        /*
+            calls the function insertOne()
+            defined in the `database` object in `../models/db.js`
+            this function adds a document to collection `users`
+        */
+        db.updateOne(Post, filter, update, function(flag) {
+            if(flag) {
+                /*
+                    upon adding a user to the database,
+                    redirects the client to `/success` using HTTP GET,
+                    defined in `../routes/routes.js`
+                    passing values using URL
+                    which calls getSuccess() method
+                    defined in `./successController.js`
+                */
+                res.redirect('back');
+            }
+        });
+    },
+
+    postDelete: function (req, res) {
+        /*
+            when submitting forms using HTTP POST method
+            the values in the input fields are stored in `req.body` object
+            each <input> element is identified using its `name` attribute
+            Example: the value entered in <input type="text" name="fName">
+            can be retrieved using `req.body.fName`
+        */
+        var postID = req.body.postID;
+
+        var conditions = {
+            _id: postID
+        }
+
+        /*
+            calls the function insertOne()
+            defined in the `database` object in `../models/db.js`
+            this function adds a document to collection `users`
+        */
+        db.deleteOne(Post, conditions, function(flag) {
+            if(flag) {
+                /*
+                    upon adding a user to the database,
+                    redirects the client to `/success` using HTTP GET,
+                    defined in `../routes/routes.js`
+                    passing values using URL
+                    which calls getSuccess() method
+                    defined in `./successController.js`
+                */
+                res.redirect('back');
+            }
+        });
     }
 }
 

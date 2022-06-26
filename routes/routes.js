@@ -36,6 +36,8 @@ app.get('/', signupController.getSignUp);
 app.get('/index', indexController.getIndex);
 
 app.post('/indexCreate', indexController.postCreate);
+app.post('/indexEdit', indexController.postEdit);
+app.post('/indexDelete', indexController.postDelete);
 
 app.get('/signup', signupController.getSignUp);
 

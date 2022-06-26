@@ -216,12 +216,12 @@
           </a>
 
           {{#if (isSameAccount @root.name this.author)}}
-            <button class="fa fa-edit d-flex text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
-            data-bs-toggle="modal" data-bs-target="#editPost"></button>
-            <button class="fa fa-trash d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
-            data-bs-toggle="modal" data-bs-target="#deletePost"></button>
-
-            <div class="modal fade" id="editPost_index">
+          <button class="fa fa-edit d-flex text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
+          data-bs-toggle="modal" data-bs-target="#editPost"></button>
+          <button class="fa fa-trash d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
+          data-bs-toggle="modal" data-bs-target="#deletePost"></button>
+          <form id = "editPost_form" name="editPost" action="/indexEdit" method="post" enctype="multipart/form-data">
+            <div class="modal fade" id="editPost">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -231,25 +231,28 @@
                   <div class="modal-body">
                     <div class="form-group">
                         <label for="postTitle_edit_index" class="form-control bg-dark text-white">Post Title: </label>
-                        <input type="text" class="form-control" id="postTitle_edit_index" placeholder="Delicious Bacsilog in Manila!">
+                        <input type="text" class="form-control" name="postTitle_ed" id="postTitle_edit_index" placeholder="{{this.title}}" required>
                     </div>
                     <div class="form-group">
                         <label for="postBody_edit_index" class="form-control bg-dark text-white">Post Body: </label>
-                        <textarea class="form-control" id="postBody_edit_index"></textarea>
+                        <textarea class="form-control" name="postBody_ed" id="postBody_edit_index" placeholder="{{this.body}}" required></textarea>
                     </div>
                     <div class="form-group">
                         <label for="uploadFoodImage_edit_index" class="form-control bg-dark text-white">Food Image: </label>
-                        <input type="file" class="form-control" id="uploadFoodImage_edit_index">
+                        <input type="file" class="form-control" name="image" id="uploadFoodImage_edit_index" accept="image/*" required>
                     </div>
+                    <input type="hidden" id="postID_ed" name="postID" value={{this._id}} required>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-dark">Submit</button>
+                    <input class="btn btn-dark" type="submit" id="postSubmit_ed" value="Submit">
                   </div>
                 </div>
               </div>
             </div>
+          </form>
 
+          <form id = "deletePost_form" name="deletePost" action="/indexDelete" method="post" enctype="multipart/form-data">
             <div class="modal fade" id="deletePost">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -262,12 +265,14 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-dark">Yes</button>
+                    <input class="btn btn-dark" type="submit" id="postSubmit_del" value="Yes">
                   </div>
+                  <input type="hidden" id="postID_del" name="postID" value={{this._id}} required>
                 </div>
               </div>
             </div>
-          {{/if}}
+          </form>
+        {{/if}}
         </div>
         <h2 style="text-align: center;">{{this.title}}<span id = "dots{{@index}}"> ... </span> </h2>
           <p class = "mores" id = "more{{@index}}">{{this.body}}</p>
