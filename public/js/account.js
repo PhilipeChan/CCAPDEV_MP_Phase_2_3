@@ -1,13 +1,18 @@
 $(document).ready(function () {
-
+    /*
+        Function which returns true if all the fields are not empty.
+        Otherwise, this function returns false.
+        This trims leading and trailing blank spaces
+        then checks if the values are not empty.
+    */
     function isFilled() {
 
         /*
             gets the value of a specific field in the signup form
             then removes leading and trailing blank spaces
         */
-        var uname = validator.trim($('#uname').val());
-        var pass = validator.trim($('#pass').val());
+        var uname = validator.trim($('#name_ed').val());
+        var pass = validator.trim($('#password_ed').val());
 
         /*
             checks if the trimmed values in fields are not empty
@@ -18,38 +23,88 @@ $(document).ready(function () {
         return !passEmpty && !unameEmpty;
     }
 
+    
     function isValidUsername(field, callback) {
 
-
-        var uname = validator.trim($('#uname').val());
+        /*
+            gets the value of `name_ed` in the signup form
+            removes leading and trailing blank spaces
+            then checks if it contains at least 4 characters
+        */
+        var uname = validator.trim($('#name_ed').val());
         var isValidLength = validator.isLength(uname, {min: 4});
 
+        // if at least 4 chars
         if(isValidLength) {
+            /*
+                send an HTTP GET request using JQuery AJAX
+                the first parameter is the path in our server
+                which is defined in `../../routes/routes.js`
+                the server will execute the function getCheckUsername()
+                defined in `../../controllers/signupController.js`
+                the second parameter passes the variable `uname`
+                as the value of the field `username` to the server
+                the last parameter executes a callback function
+                when the server sent a response
+            */
             $.get('/getCheckUsername', {username: uname}, function (result) {
+
+                // if the value of `uname` does not exists in the database
                 if(result.username != uname) {
 
-                    if(field.is($('#uname')))
-                        $('#unameError').text('');
+                    /*
+                        check if the <input> field calling this function
+                        is the `name_ed` <input> field
+                    */
+                    if(field.is($('#name_ed')))
+                        // remove the error message in `unameEditError`
+                        $('#unameEditError').text('');
 
+                    /*
+                        since  the value of `name_ed` contains at least 4 chars
+                        and is not yet used by another user in the database
+                        return true.
+                    */
                     return callback(true);
 
                 }
 
+                // else if the value of `name_ed` exists in the database
                 else {
 
-                    if(field.is($('#uname')))
-                        $('#unameError').text('Username number already registered.');
+                    /*
+                        check if the <input> field calling this function
+                        is the `name_ed` <input> field
+                    */
+                    if(field.is($('#name_ed')))
+                        // display appropriate error message in `unameEditError`
+                        $('#unameEditError').text('Username number already registered.');
 
+                    /*
+                        since the value of `name_ed`
+                        is used by another user in the database
+                        return false.
+                    */
                     return callback(false);
                 }
             });
         }
 
+        // else if the value of `name_ed` is less than 4 chars
         else {
 
-            if(field.is($('#uname')))
-                $('#unameError').text('Username should contain 4 characters.');
+            /*
+                check if the <input> field calling this function
+                is the `name_ed` <input> field
+            */
+            if(field.is($('#name_ed')))
+                // display appropriate error message in `unameEditError`
+                $('#unameEditError').text('Username should contain 4 characters.');
 
+            /*
+                since the value of `name_ed` is less than 4 chars
+                return false.
+            */
             return callback(false);
         }
     }
@@ -62,9 +117,9 @@ $(document).ready(function () {
         /*
             gets the value of `pw` in the signup form
             removes leading and trailing blank spaces
-            then checks if it contains at least 4 characters.
+            then checks if it contains at least 8 characters.
         */
-        var password = validator.trim($('#pass').val());
+        var password = validator.trim($('#password_ed').val());
         var isValidLength = validator.isLength(password, {min: 4});
 
         // if the value of `pw` contains at least 4 characters
@@ -74,9 +129,9 @@ $(document).ready(function () {
                 check if the <input> field calling this function
                 is the `pw` <input> field
             */
-            if(field.is($('#pass')))
-                // remove the error message in `passError`
-                $('#passError').text('');
+            if(field.is($('#password_ed')))
+                // remove the error message in `passEditError`
+                $('#passEditError').text('');
 
             /*
                 since  the value of `pw` contains at least 4 characters
@@ -92,9 +147,9 @@ $(document).ready(function () {
                 check if the <input> field calling this function
                 is the `pw` <input> field
             */
-            if(field.is($('#pass')))
-                // display appropriate error message in `passError`
-                $('#passError').text(`Passwords should contain at least 4
+            if(field.is($('#password_ed')))
+                // display appropriate error message in `passEditError`
+                $('#passEditError').text(`Passwords should contain at least 4
                     characters.`);
         }
 
@@ -111,7 +166,7 @@ $(document).ready(function () {
         This activates the `submit` button if:
         - value returned by function isFilled() is true
         - value returned by function isValidPassword() is true
-        - value returned by function usValidUsername() is true
+        - value returned by function isValidUsername() is true
 
         The function has 3 parameters:
         - field - refers to the current <input> field calling this function
@@ -165,41 +220,41 @@ $(document).ready(function () {
             /*
                 if all fields are filled
                 and the password contains at least 4 characters
-                and the username contains at least 4 characters and is unique
+                and the ID number contains  at least 4 characters and is unique
                 then enable the `submit` button
             */
             if(filled && validPassword && validUsername)
-                $('#submit_signup').prop('disabled', false);
+                $('#submitAccount_ed').prop('disabled', false);
 
             /*
                 else if at least one condition has not been met
                 disable the `submit` button
             */
             else
-                $('#submit_signup').prop('disabled', true);
+                $('#submitAccount_ed').prop('disabled', true);
         });
     }
 
     /*
-        attach the event `keyup` to the html element where id = `uname`
+        attach the event `keyup` to the html element where id = `name_ed`
         this html element is an `<input>` element
         this event activates when the user releases a key on the keyboard
     */
-    $('#uname').keyup(function () {
+    $('#name_ed').keyup(function () {
 
-        // calls the validateField() function to validate `fName`
-        validateField($('#uname'), 'Username', $('#unameError'));
+        // calls the validateField() function to validate `name_ed`
+        validateField($('#name_ed'), 'Username', $('#unameEditError'));
     });
 
     /*
-        attach the event `keyup` to the html element where id = `pass`
+        attach the event `keyup` to the html element where id = `pw`
         this html element is an `<input>` element
         this event activates when the user releases a key on the keyboard
     */
-    $('#pass').keyup(function () {
+    $('#password_ed').keyup(function () {
 
         // calls the validateField() function to validate `pw`
-        validateField($('#pass'), 'Password', $('#passError'));
+        validateField($('#password_ed'), 'Password', $('#passEditError'));
     });
 
 });

@@ -4,14 +4,26 @@
           <title>Food Reviews Philippines</title>
           <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
           <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
           <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-            <script>
+          <script>
+            $(document).ready(function () {
+              //https://stackoverflow.com/questions/17745292/how-to-retrieve-all-localstorage-items-without-knowing-the-keys-in-advance
+              var values = [];
+              var keys = Object.keys(localStorage);
+              var i = keys.length;
 
-            function openForm() 
-            {
-                document.getElementById("myForm").style.display = "block";
-            }
+              while ( i-- ) {
+                values.push( localStorage.getItem(keys[i]) );
+              }
 
+              for (let j = 0; j < values.length; j++) {
+                if (keys[j].includes("{{accountID}}"))
+                  $("#"+values[j]).attr("disabled", true);
+              }
+            })
+          </script>
+          <script>
             function readFunction(dots, more, readButton) 
             {
               var dots = document.getElementById(dots);
@@ -31,7 +43,7 @@
                 seeMore.style.display = "inline";
               }
             }
-            function incFunction(vote, down) 
+            function incFunction(vote, down, id, type, author) 
             {
               if (!document.getElementById(down).disabled) 
               {
@@ -40,6 +52,11 @@
                 val++;
                 document.getElementById(vote).innerHTML = val;
                 document.getElementById(down).disabled = true;
+                $.get('/upRep', {id: id, type: type, author: author});
+                if (type == "post")
+                  localStorage.setItem('postButton' + "{{accountID}}" + id, down);
+                else
+                  localStorage.setItem('commentButton' + "{{accountID}}" + id, down);
               }
               else 
               {
@@ -48,10 +65,15 @@
                 val--;
                 document.getElementById(vote).innerHTML = val;
                 document.getElementById(down).disabled = false;
+                $.get('/downRep', {id: id, type: type, author: author});
+                if (type == "post")
+                  localStorage.removeItem('postButton' + "{{accountID}}" + id, down);
+                else
+                  localStorage.removeItem('commentButton' + "{{accountID}}" + id, down);
               }
             }
 
-            function decFunction(vote, up) 
+            function decFunction(vote, up, id, type, author) 
             {
               if (!document.getElementById(up).disabled) 
               {
@@ -60,6 +82,11 @@
                 val--;
                 document.getElementById(vote).innerHTML = val;
                 document.getElementById(up).disabled = true;
+                $.get('/downRep', {id: id, type: type, author: author});
+                if (type == "post")
+                  localStorage.setItem('postButton' + "{{accountID}}" + id, up);
+                else
+                  localStorage.setItem('commentButton' + "{{accountID}}" + id, up);
               }
               else 
               {
@@ -68,6 +95,11 @@
                 val++;
                 document.getElementById(vote).innerHTML = val;
                 document.getElementById(up).disabled = false;
+                $.get('/upRep', {id: id, type: type, author: author});
+                if (type == "post")
+                  localStorage.removeItem('postButton' + "{{accountID}}" + id, up);
+                else
+                  localStorage.removeItem('commentButton' + "{{accountID}}" + id, up);
               }
             }
 
@@ -112,9 +144,9 @@
         <img src="../images/logo.png" alt="Logo" style="width:70px;">
         News Feed
       </a>
-      <form class="d-flex ms-auto mx-2">
-        <input class="form-control me-2" type="text" placeholder="Search">
-        <button class="btn btn-light" type="button">Search</button>
+      <form class="d-flex ms-auto mx-2" id = "searchBar_index" name="searchBar_index" action="/indexSearch" method="post">
+        <input class="form-control me-2" name="searchInput" id = "searchInput_index" type="text" placeholder="Search" required>
+        <input class="btn btn-light" type="submit" id="submitSearch_index" value="Submit">
       </form>
       <a class="mx-2" href="/account/{{name}}">
         <i class="fa fa-user text-white" style="font-size:30px"></i>
@@ -165,6 +197,7 @@
   </form>
   <br>
   {{#each posts}}
+  {{#if (containsPost @root.search this.author this.title this.body)}}
     <div class="container d-flex flex-column text-center p-5 px-3 my-5 bg-white">
       <div class="container d-flex flex-row bg-dark mb-3">
         <a href="/account/{{this.author}}" class="link-dark">
@@ -174,11 +207,11 @@
 
         {{#if (isSameAccount @root.name this.author)}}
           <button class="fa fa-edit d-flex text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
-          data-bs-toggle="modal" data-bs-target="#editPost"></button>
+          data-bs-toggle="modal" data-bs-target="#editPost{{this._id}}"></button>
           <button class="fa fa-trash d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:30px;"
-          data-bs-toggle="modal" data-bs-target="#deletePost"></button>
-          <form id = "editPost_form" name="editPost" action="/indexEdit" method="post" enctype="multipart/form-data">
-            <div class="modal fade" id="editPost">
+          data-bs-toggle="modal" data-bs-target="#deletePost{{this._id}}"></button>
+          <form id = "editPost_form_index" name="editPost" action="/indexEdit" method="post" enctype="multipart/form-data">
+            <div class="modal fade" id="editPost{{this._id}}">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
@@ -198,11 +231,11 @@
                         <label for="uploadFoodImage_edit_index" class="form-control bg-dark text-white">Food Image: </label>
                         <input type="file" class="form-control" name="image" id="uploadFoodImage_edit_index" accept="image/*" required>
                     </div>
-                    <input type="hidden" id="postID_ed" name="postID" value={{this._id}} required>
+                    <input type="hidden" id="postID_index_ed" name="postID" value={{this._id}} required>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                    <input class="btn btn-dark" type="submit" id="postSubmit_ed" value="Submit">
+                    <input class="btn btn-dark" type="submit" id="postSubmit_index_ed" value="Submit">
                   </div>
                 </div>
               </div>
@@ -210,12 +243,12 @@
           </form>
 
           <form id = "deletePost_form" name="deletePost" action="/indexDelete" method="post" enctype="multipart/form-data">
-            <div class="modal fade" id="deletePost">
+            <div class="modal fade" id="deletePost{{this._id}}">
               <div class="modal-dialog">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title">Delete Post</h5>
-                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                   </div>
                   <div class="modal-body">
                     <p> Are you sure you want to delete your post?</p>
@@ -225,39 +258,40 @@
                     <input class="btn btn-dark" type="submit" id="postSubmit_del" value="Yes">
                   </div>
                   <input type="hidden" id="postID_del" name="postID" value={{this._id}} required>
+                  <input type="hidden" id="postRep_del" name="postRep" value={{this.reputation}} required>
                 </div>
               </div>
             </div>
           </form>
         {{/if}}
       </div>
-      <h2 style="text-align: center;">{{this.title}}<span id = "dots{{@index}}"> ... </span> </h2>
-        <p class = "mores" id = "more{{@index}}">{{this.body}}</p>
+      <h2 style="text-align: center;">{{this.title}}<span id = "dots{{this._id}}"> ... </span> </h2>
+        <p class = "mores" id = "more{{this._id}}">{{this.body}}</p>
         <form action = "javascript:void(0);">
-          <button onclick = 'readFunction("dots{{@index}}", "more{{@index}}", "readButton{{@index}}")' id = "readButton{{@index}}">Read more! </button>
+          <button onclick = 'readFunction("dots{{this._id}}", "more{{this._id}}", "readButton{{this._id}}")' id = "readButton{{this._id}}">Read more! </button>
         </form>
         <pre></pre>
 
       <img src="../{{this.foodPic}}" alt={{this.foodPic}} class="mx-auto d-block rounded" style="width:500px;height:375px;margin-bottom:10px;">
       <div class="container d-flex flex-row">
-        <button id="up{{@index}}" class="fa fa-solid fa-thumbs-up d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
-        onclick='incFunction("vote{{@index}}", "down{{@index}}")'></button>
-        <span id="vote{{@index}}" style="font-size:24px;margin:8px 12px;">{{this.reputation}}</span>
-        <button id="down{{@index}}" class="fa fa-solid fa-thumbs-down d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
-        onclick='decFunction("vote{{@index}}", "up{{@index}}")'></button>
+        <button id="up{{this._id}}" class="fa fa-solid fa-thumbs-up d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+        onclick='incFunction("vote{{this._id}}", "down{{this._id}}", "{{this._id}}", "post", "{{this.author}}")'></button>
+        <span id="vote{{this._id}}" style="font-size:24px;margin:8px 12px;">{{this.reputation}}</span>
+        <button id="down{{this._id}}" class="fa fa-solid fa-thumbs-down d-flex text-black" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
+        onclick='decFunction("vote{{this._id}}", "up{{this._id}}", "{{this._id}}", "post", "{{this.author}}")'></button>
         <button class="fa fa-comments-o d-flex text-black ms-auto" style="font-size:30px;margin-top:10px;margin-bottom:10px;"
-        onclick='showComments("commentBox{{@index}}")'></button>
+        onclick='showComments("commentBox{{this._id}}")'></button>
       </div>
 
-      <div class="container d-flex flex-column bg-light d-none" id="commentBox{{@index}}">
-        <!--
-        {{#each comments}}
+      <div class="container d-flex flex-column bg-light d-none" id="commentBox{{this._id}}">
+        {{#each @root.comments}}
+        {{#if (isSameAccount this.parentPostID ../this._id)}}
           <div class="container d-flex align-items-center border border-dark">
-            <button id="upCom{{@index}}" class="fa fa-solid fa-thumbs-up text-black mx-0" style="font-size:10px;"
-            onclick='incFunction("voteCom{{@index}}", "downCom{{@index}}")'></button>
-            <span id="voteCom{{@index}}" style="font-size:12px;margin:4px 6px;">{{this.reputation}}</span>
-            <button id="downCom{{@index}}" class="fa fa-solid fa-thumbs-down text-black mx-0" style="font-size:10px;"
-            onclick='decFunction("voteCom{{@index}}", "upCom{{@index}}")'></button>
+            <button id="upCom{{this._id}}" class="fa fa-solid fa-thumbs-up text-black mx-0" style="font-size:10px;"
+            onclick='incFunction("voteCom{{this._id}}", "downCom{{this._id}}",  "{{this._id}}", "comment", "{{this.author}}")'></button>
+            <span id="voteCom{{this._id}}" style="font-size:12px;margin:4px 6px;">{{this.reputation}}</span>
+            <button id="downCom{{this._id}}" class="fa fa-solid fa-thumbs-down text-black mx-0" style="font-size:10px;"
+            onclick='decFunction("voteCom{{this._id}}", "upCom{{this._id}}",  "{{this._id}}", "comment", "{{this.author}}")'></button>
             <a href="/account/{{this.author}}" class="link-dark">
               <img src="../{{this.profPic}}" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;margin-left:5px;">
               <span>{{this.author}}</span>
@@ -265,66 +299,76 @@
             <span class="mx-3" style="font-size:14px">{{this.body}}</span>
             {{#if (isSameAccount @root.name this.author)}}
               <button class="fa fa-edit d-flex text-black ms-auto" style="font-size:12px;margin-top:10px;margin-bottom:30px;"
-              data-bs-toggle="modal" data-bs-target="#editComment"></button>
+              data-bs-toggle="modal" data-bs-target="#editComment{{this._id}}"></button>
               <button class="fa fa-trash d-flex text-black" style="font-size:12px;margin-top:10px;margin-bottom:30px;"
-              data-bs-toggle="modal" data-bs-target="#deleteComment"></button>
+              data-bs-toggle="modal" data-bs-target="#deleteComment{{this._id}}"></button>
 
-              <div class="modal fade" id="editComment">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Edit Comment</h5>
-                      <button class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                      <div class="form-group">
-                          <label for="commentBody" class="form-control bg-dark text-white">Comment Body: </label>
-                          <textarea class="form-control" id="commentBody"></textarea>
-                      </div>  
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-dark">Submit</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="modal fade" id="deleteComment">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title">Delete Comment</h5>
-                      <button class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                      <p> Are you sure you want to delete your comment?</p>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-light" data-bs-dismiss="modal">No</button>
-                      <button type="button" class="btn btn-dark">Yes</button>
+              <form id = "editComment_form" name="editComment" action="/indexCommentEdit" method="post" enctype="multipart/form-data">
+                <div class="modal fade" id="editComment{{this._id}}">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Edit Comment</h5>
+                        <button class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="form-group">
+                            <label for="commentBody_index_ed" class="form-control bg-dark text-white">Comment Body: </label>
+                            <textarea class="form-control" name="commentBody" id="commentBody_index_ed" placeholder="{{this.body}}" required></textarea>
+                        </div>
+                        <input type="hidden" id="commentID_index_ed" name="commentID" value={{this._id}} required>  
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                        <input class="btn btn-dark" type="submit" id="commentSubmit_index_ed" value="Submit">
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </form>
+              <form id = "deleteComment_form" name="deleteComment" action="/indexCommentDelete" method="post" enctype="multipart/form-data">
+                <div class="modal fade" id="deleteComment{{this._id}}">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">Delete Comment</h5>
+                        <button class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <p> Are you sure you want to delete your comment?</p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">No</button>
+                        <input class="btn btn-dark" type="submit" id="commentSubmit_del" value="Yes">
+                      </div>
+                      <input type="hidden" id="commentID_del" name="commentID" value={{this._id}} required>
+                      <input type="hidden" id="commentRep_del" name="commentRep" value={{this.reputation}} required>
+                    </div>
+                  </div>
+                </div>
+              </form>
             {{/if}}
           </div>
+        {{/if}}
         {{/each}}
-        -->
         <div class="container d-flex align-items-center border border-dark">
           <a href="/account/{{@root.name}}" class="link-dark">
             <img src="../{{@root.pic}}" alt="DisplayPicture" class="me-auto rounded-circle" style="width:50px;height:50px;">
             <span>{{@root.name}}</span>
           </a>
-          <div class="input-group my-2">
-            <textarea class="form-control" placeholder="Comment..."></textarea>
-            <div class="input-group-append">
-              <button class="btn btn-outline-dark" type="button">Submit</button>
+          <form id = "postComment" name="postComment" action="/indexCommentCreate" method="post" enctype="multipart/form-data">
+            <div class="input-group my-2">
+              <input type="hidden" id="parentPostID_index" name="parentPostID" value="{{this._id}}" required>
+              <textarea class="form-control" name="commentBody" id="commentBody_index" placeholder="Comment..." cols="100" required></textarea>
+              <div class="input-group-append">
+                <input class="btn btn-outline-dark" type="submit" id="submitComment_index" value="Submit">
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
+  {{/if}}
   {{/each}}
 </body>
 </html>

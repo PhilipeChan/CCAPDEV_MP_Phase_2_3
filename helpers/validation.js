@@ -23,10 +23,8 @@ const validation = {
         */
         var validation = [
 
-            // checks if `fName` is not empty
             check('user_name', 'Usernames should contain at least 4 characters.').isLength({min: 4}),
 
-            // checks if `pw` contains at least 6 characters
             check('password', 'Passwords should contain at least 4 characters.')
             .isLength({min: 4})
         ];

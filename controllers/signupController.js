@@ -24,14 +24,6 @@ const signupController = {
     getSignUp: function (req, res) {
         // checks if a user is logged-in by checking the session data
         if(req.session.username) {
-
-            /*
-                redirects the client to `/profile` using HTTP GET,
-                defined in `../routes/routes.js`
-                passing values using URL
-                which calls getProfile() method
-                defined in `./profileController.js`
-            */
             res.redirect('/account/' + req.session.username);
         }
         // else if a user is not yet logged-in
@@ -60,9 +52,6 @@ const signupController = {
                 the field is equal to the parameter + `Error`
                 the value is equal to `msg`
                 as defined in the validation middlewares
-
-                for example, if there is an error for parameter `fName`:
-                store the value to the field `fNameError`
             */
             var details = {};
             for(i = 0; i < errors.length; i++)
@@ -80,8 +69,8 @@ const signupController = {
                 when submitting forms using HTTP POST method
                 the values in the input fields are stored in `req.body` object
                 each <input> element is identified using its `name` attribute
-                Example: the value entered in <input type="text" name="fName">
-                can be retrieved using `req.body.fName`
+                Example: the value entered in <input type="text" name="user_name">
+                can be retrieved using `req.body.user_name`
             */
             var user_name = req.body.user_name;
             var bio = req.body.bio;
@@ -114,28 +103,17 @@ const signupController = {
                 db.insertOne(User, user, function(flag) {
                     if(flag) {
                         
-                        /*
-                            stores `user.idNum` to `req.session.idNum`
-                            stores `user.fName` to `req.session.name`
-
-                            these values are stored to the `req.session` object
-                            to indicate that a user is logged-in
-                            these values will be removed
-                            if the user logs-out from the web application
-                        */
+                        // store user data in session
                         req.session.username = user.username;
                         req.session.profPic = user.profPic;
                         req.session.bio = user.bio;
                         req.session.reputation = user.reputation;
+                        db.findOne(User, {username: user.username}, '', function(result) {
+                            if(result) {
+                                req.session._id = result._id;
+                            }
+                        });
 
-                        /*
-                            upon adding a user to the database,
-                            redirects the client to `/success` using HTTP GET,
-                            defined in `../routes/routes.js`
-                            passing values using URL
-                            which calls getSuccess() method
-                            defined in `./successController.js`
-                        */
                         res.redirect('/account/' + user.username);
                     }
                 });
@@ -144,7 +122,7 @@ const signupController = {
     },
 
     /*
-        executed when the client sends an HTTP GET request `/getCheckID`
+        executed when the client sends an HTTP GET request `/getCheckUsername`
         as defined in `../routes/routes.js`
     */
     getCheckUsername: function (req, res) {
@@ -152,8 +130,8 @@ const signupController = {
         /*
             when passing values using HTTP GET method
             the values are stored in `req.query` object
-            Example url: `http://localhost/getCheckID?idNum=11312345`
-            To retrieve the value of parameter `idNum`: `req.query.idNum`
+            Example url: `http://localhost/getCheckID?username=John`
+            To retrieve the value of parameter `username`: `req.query.username`
         */
         var username = req.query.username;
 
@@ -162,7 +140,7 @@ const signupController = {
             defined in the `database` object in `../models/db.js`
             searches for a single document based on the model `User`
             sends an empty string to the user if there are no match
-            otherwise, sends an object containing the `idNum`
+            otherwise, sends an object containing the `username`
         */
         db.findOne(User, {username: username}, 'username', function (result) {
             res.send(result);

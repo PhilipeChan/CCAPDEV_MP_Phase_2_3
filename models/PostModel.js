@@ -1,7 +1,7 @@
 // import module `mongoose`
 var mongoose = require('mongoose');
 
-// defines the schema for collection `users`
+// defines the schema for collection `posts`
 var PostSchema = new mongoose.Schema({
     author: {
         type: String,
@@ -29,10 +29,4 @@ var PostSchema = new mongoose.Schema({
     }
 });
 
-/*
-    exports a mongoose.model object based on `UserSchema` (defined above)
-    when another script exports from this file
-    This model executes CRUD operations
-    to collection `users` -> plural of the argument `User`
-*/
 module.exports = mongoose.model('Post', PostSchema);

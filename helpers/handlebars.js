@@ -3,7 +3,10 @@ function hbsHelpers(hbs) {
         return sessName == pageName;
     });
   
-    // More helpers...
+    hbs.registerHelper('containsPost', function (search, author, title, body) {
+        var flag = author.includes(search) || title.includes(search) || body.includes(search);
+        return flag;
+    });
   }
   
   module.exports = hbsHelpers;

@@ -1,5 +1,3 @@
-
-// import module `bcrypt`
 const bcrypt = require('bcrypt');
 
 // import module `database` from `../models/db.js`
@@ -21,19 +19,10 @@ const loginController = {
     getLogIn: function (req, res) {
         // checks if a user is logged-in by checking the session data
         if(req.session.username) {
-
-            /*
-                redirects the client to `/profile` using HTTP GET,
-                defined in `../routes/routes.js`
-                passing values using URL
-                which calls getProfile() method
-                defined in `./profileController.js`
-            */
             res.redirect('/account/' + req.session.username);
         }
         // else if a user is not yet logged-in
         else {
-            // render `../views/signup.hbs`
             res.render('login');
         }
     },
@@ -44,13 +33,6 @@ const loginController = {
     */
     postLogIn: function (req, res) {
 
-        /*
-            when submitting forms using HTTP POST method
-            the values in the input fields are stored in `req.body` object
-            each <input> element is identified using its `name` attribute
-            Example: the value entered in <input type="text" name="idNum">
-            can be retrieved using `req.body.idNum`
-        */
         var uname = req.body.user_name;
         var pw = req.body.password;
 
@@ -58,14 +40,15 @@ const loginController = {
             calls the function findOne()
             defined in the `database` object in `../models/db.js`
             this function finds a document from collection `users`
-            where `idNum` is equal to `idNum`
+            where `username` is equal to `username`
         */
         db.findOne(User, {username: uname}, '', function (result) {
 
-            // if a user with `idNum` equal to `idNum` exists
+            // if a user with `username` equal to `username` exists
             if(result) {
 
                 var user = {
+                    _id: result._id,
                     username: result.username,
                     profPic: result.profPic,
                     bio: result.bio,
@@ -84,28 +67,13 @@ const loginController = {
                         match the hashed password from the database
                     */
                     if(equal) {
-                        /*
-                            stores `user.idNum` to `req.session.idNum`
-                            stores `user.fName` to `req.session.name`
+                        // stores user data in session
+                        req.session.username = user.username;
+                        req.session.profPic = user.profPic;
+                        req.session.bio = user.bio;
+                        req.session.reputation = user.reputation;
+                        req.session._id = user._id;
 
-                            these values are stored to the `req.session` object
-                            to indicate that a user is logged-in
-                            these values will be removed
-                            if the user logs-out from the web application
-                        */
-                            req.session.username = user.username;
-                            req.session.profPic = user.profPic;
-                            req.session.bio = user.bio;
-                            req.session.reputation = user.reputation;
-
-                        /*
-                            redirects the client to `/profile/idNum`
-                            where `idNum` is equal
-                            to the `idNum` entered by the user
-                            defined in `../routes/routes.js`
-                            which calls getProfile() method
-                            defined in `./profileController.js`
-                        */
                         res.redirect('/account/' + user.username);
                     }
                     /*
@@ -116,16 +84,12 @@ const loginController = {
                         var details = {error_login: `Username and/or Password
                             is incorrect.`}
 
-                        /*
-                            render `../views/login.hbs`
-                            display the errors
-                        */
                         res.render('login', details);
                     }
                 });
             }
 
-            // else if a user with `idNum` equal to `idNum` does not exist
+            // else if a user with 'username' equal to `username` does not exist
             else {
                 var details = {error_login: `Username and/or Password is
                     incorrect.`}
@@ -140,8 +104,4 @@ const loginController = {
     }
 }
 
-/*
-    exports the object `loginController` (defined above)
-    when another script exports from this file
-*/
 module.exports = loginController;
