@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 
 // ccapdev-mongoose is the name of the database
-const url = 'mongodb://localhost:27017/ccapdev-mp-2-3';
+const url = process.env.MONGODB_URI || 'mongodb://localhost:27017/ccapdev-mp-2-3';
 
 // additional connection options
 const options = {
