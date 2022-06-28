@@ -2,8 +2,8 @@
   "name": "ccapdev_mp_phase_2_3",
   "version": "1.0.0",
   "description": "",
-  "engines": { 
-    "node": "16.15.1" 
+  "engines": {
+    "node": "16.15.1"
   },
   "main": "index.js",
   "scripts": {
