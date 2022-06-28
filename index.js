@@ -1,3 +1,4 @@
+var PORT = process.env.PORT || 3000;
 // import module `express`
 const express = require('express');
 
@@ -20,7 +21,6 @@ const routes = require('./routes/routes.js');
 const db = require('./models/db.js');
 
 const app = express();
-const port = 3000;
 
 // set `hbs` as view engine
 app.set('view engine', 'hbs');
@@ -62,6 +62,6 @@ app.use(function (req, res) {
 });
 
 // binds the server to a specific port
-app.listen(port, function () {
-    console.log('app listening at port ' + port);
+app.listen(PORT, function () {
+    console.log('app listening at port ' + PORT);
 });
