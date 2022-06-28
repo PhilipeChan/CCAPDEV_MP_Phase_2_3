@@ -1,4 +1,4 @@
-var PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || '3000';
 // import module `express`
 const express = require('express');
 
@@ -24,6 +24,7 @@ const app = express();
 
 // set `hbs` as view engine
 app.set('view engine', 'hbs');
+app.set("port", PORT);
 
 // sets `/views/partials` as folder containing partial hbs files
 hbs.registerPartials(__dirname + '/views/partials');
