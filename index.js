@@ -22,6 +22,8 @@ const db = require('./models/db.js');
 
 const app = express();
 
+require('dotenv').config();
+
 // set `hbs` as view engine
 app.set('view engine', 'hbs');
 app.set("port", PORT);
