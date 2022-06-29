@@ -19,7 +19,7 @@ const loginController = {
     getLogIn: function (req, res) {
         // checks if a user is logged-in by checking the session data
         if(req.session.username) {
-            res.redirect('/account/' + req.session.username);
+            res.redirect('/index/');
         }
         // else if a user is not yet logged-in
         else {
@@ -74,7 +74,7 @@ const loginController = {
                         req.session.reputation = user.reputation;
                         req.session._id = user._id;
 
-                        res.redirect('/account/' + user.username);
+                        res.redirect('/index/');
                     }
                     /*
                         else if the entered password

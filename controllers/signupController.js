@@ -24,7 +24,7 @@ const signupController = {
     getSignUp: function (req, res) {
         // checks if a user is logged-in by checking the session data
         if(req.session.username) {
-            res.redirect('/account/' + req.session.username);
+            res.redirect('/index/');
         }
         // else if a user is not yet logged-in
         else {
@@ -114,7 +114,7 @@ const signupController = {
                             }
                         });
 
-                        res.redirect('/account/' + user.username);
+                        res.redirect('/index/');
                     }
                 });
             });
