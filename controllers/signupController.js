@@ -95,6 +95,7 @@ const signupController = {
                     reputation: 0
                 }
 
+
                 /*
                     calls the function insertOne()
                     defined in the `database` object in `../models/db.js`
@@ -108,13 +109,12 @@ const signupController = {
                         req.session.profPic = user.profPic;
                         req.session.bio = user.bio;
                         req.session.reputation = user.reputation;
-                        db.findOne(User, {username: user.username}, '', function(result) {
+                        db.findOne(User, {username: user.username}, '_id', function(result) {
                             if(result) {
                                 req.session._id = result._id;
+                                res.redirect('/index/');
                             }
                         });
-
-                        res.redirect('/index/');
                     }
                 });
             });
