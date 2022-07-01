@@ -10,8 +10,6 @@ const loginController = require('../controllers/loginController.js');
 
 const logoutController = require('../controllers/logoutController.js');
 
-const aboutController = require('../controllers/aboutController.js');
-
 const validation = require('../helpers/validation.js');
 
 const fileUpload = require('express-fileupload');
@@ -23,8 +21,6 @@ app.use(fileUpload());
 app.get('/', signupController.getSignUp);
 
 app.get('/index', indexController.getIndex);
-
-app.get('/about', aboutController.getAbout);
 
 app.post('/indexCreate', indexController.postCreate);
 app.post('/indexEdit', indexController.postEdit);
