@@ -1,0 +1,75 @@
+<html>
+    <head>
+        <title>
+            About the Website
+        </title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+          <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+        <style type="text/css">
+              @media (min-width: 1200px) {
+                .container{
+                    max-width: 725px;
+                }
+              }
+
+              a:link {
+                text-decoration: none;
+              }
+              
+              .mores {
+                display: none;
+              }
+              h1 {
+                text-align: center;
+              }
+              p {
+                text-align: center;
+              }
+
+            </style>
+    </head>
+    <body style="background-color:#e7dfd8;">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+        <div class="container-fluid">
+        <a class="mx-2" href="/about">
+            <i class="fa fa-info-circle" style="font-size:15px;color:white"></i>
+        </a>
+        <a class="navbar-brand" href="/index">
+            <img src="../images/logo.png" alt="Logo" style="width:70px;">
+            News Feed
+        </a>
+        <form class="d-flex ms-auto mx-2" id = "searchBar_index" name="searchBar_index" action="/indexSearch" method="post">
+            <input class="form-control me-2" name="searchInput" id = "searchInput_index" type="text" placeholder="Search" required>
+            <input class="btn btn-light" type="submit" id="submitSearch_index" value="Submit">
+        </form>
+        <a class="mx-2" href="/account/{{name}}">
+            <i class="fa fa-user text-white" style="font-size:30px"></i>
+            <span class="text-white">{{name}}</span>
+        </a>
+        <a class="mx-2" href="/logout">
+            <i class="fa fa-sign-out text-white" style="font-size:30px;"></i>
+        </a>
+        </div>
+    </nav>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+        <div class="container-fluid">
+            <i class="fa fa-copyright" style="font-size:15px;color:white"> Chan, Gerardino, Tabije - 2022 </i>
+        </div>
+    </nav>
+    <br>
+    <br>
+    <br>
+    <br>
+        <h1> NPM </h1>
+        <p> handlebars, express, express-session, mongoose, MongoDB, connect-mongo </p>
+        <hr>
+        <h1> Third Party Libraries</h1>
+        <p> https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css, 
+            https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css,
+            https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js,
+            https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js
+        </p>
+    </body>
+</html>

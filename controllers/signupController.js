@@ -24,7 +24,7 @@ const signupController = {
     getSignUp: function (req, res) {
         // checks if a user is logged-in by checking the session data
         if(req.session.username) {
-            res.redirect('/index/');
+            res.redirect('/index');
         }
         // else if a user is not yet logged-in
         else {
@@ -112,7 +112,7 @@ const signupController = {
                         db.findOne(User, {username: user.username}, '_id', function(result) {
                             if(result) {
                                 req.session._id = result._id;
-                                res.redirect('/index/');
+                                res.redirect('/index');
                             }
                         });
                     }
